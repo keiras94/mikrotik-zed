@@ -241,7 +241,100 @@ function parseLine(beforeCursor) {
 }
 
 function getInsertText(arg) {
-  return `${arg.name}=`;
+  // For enum types, insert with = and placeholder
+  if (arg.type && arg.type.startsWith("enum")) {
+    return `${arg.name}=$1`;
+  }
+  if (arg.type === "bool") {
+    return `${arg.name}=$1`;
+  }
+  if (arg.type === "string") {
+    return `${arg.name}="$1"`;
+  }
+  return `${arg.name}=$1`;
+}
+
+/**
+ * Parse enum values from an argument type string.
+ * "enum (value1 | value2)" → ["value1", "value2"]
+ * "enum (accept | drop | jump)" → ["accept", "drop", "jump"]
+ */
+function parseEnumValues(typeStr) {
+  if (!typeStr || !typeStr.startsWith("enum")) return [];
+  const match = typeStr.match(/^enum\s*\((.*)\)/);
+  if (!match) return [];
+  return match[1].split("|").map((s) => s.trim()).filter(Boolean);
+}
+
+/**
+ * Return value completions for a property whose = was just typed.
+ * This checks the current menu context for the argument definition and
+ * returns enum choices, bool options, or a type placeholder.
+ */
+function getValueCompletions(context, propertyKey) {
+  const menu = menuByPath.get(context.path);
+  if (!menu) return [];
+
+  const arg = menu.arguments.find((a) => a.name === propertyKey);
+  if (!arg || !arg.type) return [];
+
+  const items = [];
+
+  // Enum values → suggest each as a completion
+  const enumValues = parseEnumValues(arg.type);
+  for (const val of enumValues) {
+    items.push({
+      label: val,
+      kind: 12, // EnumMember
+      detail: `enum value — ${arg.type}`,
+      insertText: val,
+      insertTextFormat: 1,
+    });
+  }
+
+  // Boolean → yes / no / true / false
+  if (arg.type === "bool" || arg.type === "boolean") {
+    for (const val of ["yes", "no", "true", "false"]) {
+      items.push({
+        label: val,
+        kind: 12,
+        detail: "bool value",
+        insertText: val,
+        insertTextFormat: 1,
+      });
+    }
+  }
+
+  // Interface references
+  if (arg.type.startsWith("iface_enum")) {
+    items.push({
+      label: "ether1",
+      kind: 12,
+      detail: "common interface name",
+      insertText: "ether1",
+      insertTextFormat: 1,
+    });
+    items.push({
+      label: "bridge",
+      kind: 12,
+      detail: "common interface name",
+      insertText: "bridge",
+      insertTextFormat: 1,
+    });
+  }
+
+  // For ipAddr / ipPrefix, show type hint as a completion
+  if (arg.type.startsWith("ipAddr") || arg.type.startsWith("ipPrefix") || arg.type === "address") {
+    items.push({
+      label: "0.0.0.0/0",
+      kind: 12,
+      detail: `type: ${arg.type}`,
+      insertText: "0.0.0.0/0",
+      insertTextFormat: 1,
+    });
+  }
+
+  return items;
 }
 
 function getDetail(arg) {
@@ -358,11 +451,9 @@ function computeCompletions(beforeCursor) {
   const lastEq = context.lastToken.indexOf("=");
   if (lastEq >= 0) {
     const key = context.lastToken.slice(0, lastEq);
-    const valuePart = context.lastToken.slice(lastEq + 1);
     
-    // If user just typed = and is about to type a value, suggest the property type info
-    // For MVP, we don't do value completions yet
-    return [];
+    // Suggest enum values, bool values, or type hints for this property
+    return getValueCompletions(context, key);
   }
 
   // If the last token is a partial sub-menu/verb name or we just have a space at end
@@ -497,8 +588,11 @@ function handleMessage(msg) {
     const doc = docs.get(uri);
     if (!doc) return { id: msg.id, result: { items: [] } };
 
+    // Only use the current line for context.  Previous lines contain
+    // separate statements that confuse the tokenizer.
     const lines = doc.split("\n");
-    const beforeCursor = lines.slice(0, pos.line).join("\n") + "\n" + lines[pos.line].slice(0, pos.character);
+    const currentLine = lines[pos.line] || "";
+    const beforeCursor = currentLine.slice(0, pos.character);
     const items = computeCompletions(beforeCursor);
 
     return {

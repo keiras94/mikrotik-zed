@@ -1,10 +1,16 @@
 ; ── Comments ─────────────────────────────────────────────────────
 (comment) @comment
 
-; ── Menu prefix ──────────────────────────────────────────────────
+; ── Menu prefix / ────────────────────────────────────────────────
 (menu_prefix) @string.special.path
 
-; ── Global commands (:put, :local, :if, :for, etc.) ────────────
+; ── Menu command path segments and verbs ─────────────────────────
+; Every identifier inside a menu_command (path parts, command verb)
+; is highlighted as a builtin function.
+(menu_command
+  (identifier) @function.builtin)
+
+; ── Global commands (:put, :local, :for, etc.) ─────────────────
 (global_command_name) @keyword
 
 ; ── Control keywords ───────────────────────────────────────────
@@ -18,8 +24,13 @@
 ; ── Nil ────────────────────────────────────────────────────────
 (nil_literal) @constant.builtin
 
-; ── Named parameters ───────────────────────────────────────────
+; ── Named parameters (property=value) ──────────────────────────
+; The name part before = is a property
 (named_param name: (identifier) @property)
+
+; ── Function calls ─────────────────────────────────────────────
+(function_call
+  (identifier) @function.call)
 
 ; ── Variables ──────────────────────────────────────────────────
 (variable_reference
@@ -32,9 +43,14 @@
 ; ── Numbers ────────────────────────────────────────────────────
 (number) @number
 
-; ── IP addresses ───────────────────────────────────────────────
-(ip_address) @constant
-(ip_prefix) @constant
+; ── IP addresses / prefixes ────────────────────────────────────
+(ip_address) @number
+(ip_prefix) @number
+
+; ── Arrays ─────────────────────────────────────────────────────
+(array
+  "{" @punctuation.bracket
+  "}" @punctuation.bracket)
 
 ; ── Operators ──────────────────────────────────────────────────
 (operator) @operator
@@ -53,11 +69,12 @@
 ; ── Parent navigation ──────────────────────────────────────────
 (parent_navigation) @string.special.path
 
-; ── Command substitution brackets ──────────────────────────────
+; ── Command substitution ───────────────────────────────────────
 (command_substitution
   "[" @punctuation.bracket
   "]" @punctuation.bracket)
 
+; ── Subexpressions ─────────────────────────────────────────────
 (subexpression
   "(" @punctuation.bracket
   ")" @punctuation.bracket)
