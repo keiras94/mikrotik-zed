@@ -4,9 +4,18 @@
 ; ── Menu prefix / ────────────────────────────────────────────────
 (menu_prefix) @string.special.path
 
-; ── Menu command path segments and verbs ─────────────────────────
-; Every identifier inside a menu_command (path parts, command verb)
-; is highlighted as a builtin function.
+; ── Known command verbs inside menu_command ──────────────────────
+; These are highlighted as keywords so they stand out from path
+; segments and property names.
+(menu_command
+  [
+    "add" "remove" "set" "get" "print" "enable" "disable"
+    "find" "comment" "move" "export" "import" "edit"
+    "monitor" "reset-counters" "check" "clear" "flush" "renew"
+    "release" "scan" "blink" "pause" "reload" "power-cycle"
+  ] @keyword.function)
+
+; ── Other path segments and identifiers in menu_command ─────────
 (menu_command
   (identifier) @function.builtin)
 
@@ -18,6 +27,10 @@
 "else" @keyword.control
 "while" @keyword.control
 
+; The = in `do = {` and `else = {` blocks
+(do_block "=" @operator)
+(else_block "=" @operator)
+
 ; ── Booleans ───────────────────────────────────────────────────
 (boolean_literal) @boolean
 
@@ -27,6 +40,13 @@
 ; ── Named parameters (property=value) ──────────────────────────
 ; The name part before = is a property
 (named_param name: (identifier) @property)
+
+; The = sign in property=value assignments
+(named_param "=" @operator)
+
+; ── Array values ───────────────────────────────────────────────
+; Commas between array values
+(array "," @punctuation.delimiter)
 
 ; ── Function calls ─────────────────────────────────────────────
 (function_call

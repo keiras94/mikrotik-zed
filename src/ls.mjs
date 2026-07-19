@@ -439,33 +439,47 @@ function getRootCompletionItems() {
   }));
 }
 
+/**
+ * Return ALL possible completions for the current cursor context.
+ *
+ * The strategy is to always return everything that could match —
+ * sub-menus, standard verbs, and command arguments — and let Zed's
+ * built-in fuzzy filtering narrow it down based on what the user has
+ * typed so far.  This makes the LS feel "predictive": as you type
+ * `/ip a` it will suggest both "address" (sub-menu) and "add" (verb),
+ * because the path is known and the `a` prefix matches both.
+ *
+ * The only exception is when the cursor sits right after `property=`,
+ * where we switch to value suggestions (enum values, bool choices, …).
+ */
 function computeCompletions(beforeCursor) {
   const context = parseLine(beforeCursor);
 
-  // No path yet → suggest root menus
+  // No path yet → suggest root menus (/, /ip, /interface, …)
   if (!context.path || context.path === "") {
     return getRootCompletionItems();
   }
 
-  // If we're typing a property value (after =), suggest from type
+  // Typing a property value after = → suggest enum/bool/type values
   const lastEq = context.lastToken.indexOf("=");
   if (lastEq >= 0) {
     const key = context.lastToken.slice(0, lastEq);
-    
-    // Suggest enum values, bool values, or type hints for this property
     return getValueCompletions(context, key);
   }
 
-  // If the last token is a partial sub-menu/verb name or we just have a space at end
-  if (!context.command) {
-    // No command yet → suggest verbs + sub-menus
-    const verbItems = getVerbCompletionItems(context);
-    const subMenuItems = getSubMenuCompletionItems(context);
-    return [...subMenuItems, ...verbItems];
-  }
+  // Everything else: gather ALL candidate types and let Zed filter.
+  const items = [];
 
-  // Command is set → suggest arguments
-  return getArgCompletionItems(context, beforeCursor);
+  // 1. Sub-menus reachable from the current path
+  items.push(...getSubMenuCompletionItems(context));
+
+  // 2. Standard RouterOS verbs (add, remove, set, print, …)
+  items.push(...getVerbCompletionItems(context));
+
+  // 3. Command arguments (properties + flags) for the current menu
+  items.push(...getArgCompletionItems(context, beforeCursor));
+
+  return items;
 }
 
 // ── Hover logic ──────────────────────────────────────────────────────
