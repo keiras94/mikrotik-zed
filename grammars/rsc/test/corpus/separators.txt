@@ -1,0 +1,107 @@
+==========
+Semicolon separator
+==========
+
+:local a 1; :local b 2; :put ($a + $b)
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (subexpression
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (operator))
+      (variable_reference
+        (identifier)))))
+
+
+==========
+Newline separator
+==========
+
+:local a 1
+:local b 2
+:put ($a + $b)
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (subexpression
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (operator))
+      (variable_reference
+        (identifier)))))
+
+
+==========
+Mixed separators
+==========
+
+:local a 1; :local b 2
+:put ($a + $b); :put "done"
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (identifier)
+    (literal
+      (number)))
+  (global_command
+    (global_command_name
+      (identifier))
+    (subexpression
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (operator))
+      (variable_reference
+        (identifier))))
+  (global_command
+    (global_command_name
+      (identifier))
+    (literal
+      (string))))
+
+

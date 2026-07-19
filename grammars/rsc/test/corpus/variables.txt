@@ -1,0 +1,96 @@
+==========
+Variable reference
+==========
+
+:put $myVar
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (variable_reference
+      (identifier))))
+
+
+==========
+Variable in string
+==========
+
+:put "Hello $name"
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (literal
+      (string))))
+
+
+==========
+Multiple variable references
+==========
+
+:put $a $b $c
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (function_call
+      function: (variable_reference
+        (identifier))
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier))))))
+
+
+==========
+Array access with arrow
+==========
+
+:put ($arr->"key")
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (subexpression
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (operator))
+      (literal
+        (string)))))
+
+
+==========
+Array access with numeric key
+==========
+
+:put ($arr->0)
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (subexpression
+      (function_call
+        function: (variable_reference
+          (identifier))
+        (operator))
+      (literal
+        (number)))))
+
+

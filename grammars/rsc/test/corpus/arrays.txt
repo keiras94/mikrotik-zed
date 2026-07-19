@@ -1,0 +1,104 @@
+==========
+Simple array
+==========
+
+:put {1; 2; 3}
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (array
+      (literal
+        (number))
+      (literal
+        (number))
+      (literal
+        (number)))))
+
+
+==========
+Array with named elements
+==========
+
+:put {a=1; b=2; c=3}
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (array
+      (named_param
+        name: (identifier)
+        value: (literal
+          (number)))
+      (named_param
+        name: (identifier)
+        value: (literal
+          (number)))
+      (named_param
+        name: (identifier)
+        value: (literal
+          (number))))))
+
+
+==========
+Array with trailing semicolon
+==========
+
+:put {1; 2;}
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (array
+      (literal
+        (number))
+      (literal
+        (number)))))
+
+
+==========
+Empty array
+==========
+
+:put {}
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (array)))
+
+
+==========
+Mixed array
+==========
+
+:put {1; name=test; 3}
+
+---
+
+(source_file
+  (global_command
+    (global_command_name
+      (identifier))
+    (array
+      (literal
+        (number))
+      (named_param
+        name: (identifier)
+        value: (identifier))
+      (literal
+        (number)))))
+
+
