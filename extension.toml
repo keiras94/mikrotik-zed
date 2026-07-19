@@ -3,12 +3,12 @@ name = "MikroTik RouterOS Script"
 description = "RSC language support for MikroTik RouterOS (7.22+) with syntax highlighting and command autocompletion."
 version = "0.1.0"
 schema_version = 1
-authors = ["Francisco"]
-repository = "https://github.com/fravic/mikrotik-zed"
+authors = ["keiras94"]
+repository = "https://github.com/keiras94/mikrotik-zed"
 
 [grammars.rsc]
-repository = "https://github.com/fravic/mikrotik-rsc-grammar"
-rev = "0000000000000000000000000000000000000000"
+repository = "https://github.com/keiras94/mikrotik-rsc-grammar"
+rev = "318e73abb40e279cfb7666b11094f34cd7f22a49"
 
 [language_servers.rsc-ls]
 name = "RSC Language Server"

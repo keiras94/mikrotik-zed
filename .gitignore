@@ -1,9 +1,9 @@
 # Build artifacts
-grammar/src/
-grammar/target/
-grammar/node_modules/
-grammar/prebuilds/
-grammar/bindings/node/
+grammars/rsc/src/
+grammars/rsc/target/
+grammars/rsc/node_modules/
+grammars/rsc/prebuilds/
+grammars/rsc/bindings/node/
 
 # IDE / editor
 .zed/

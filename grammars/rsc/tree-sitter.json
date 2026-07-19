@@ -1,4 +1,5 @@
 {
+  "name": "rsc",
   "grammars": [
     {
       "scope": "source.rsc",
