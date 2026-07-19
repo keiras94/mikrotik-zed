@@ -1,9 +1,12 @@
 # Build artifacts
-grammars/rsc/src/
-grammars/rsc/target/
-grammars/rsc/node_modules/
-grammars/rsc/prebuilds/
-grammars/rsc/bindings/node/
+target/
+Cargo.lock
+
+# Zed-cloned grammar (generated, not source)
+grammars/
+
+# Bare git repo for grammar source
+grammar-bare.git/
 
 # IDE / editor
 .zed/
@@ -14,10 +17,6 @@ grammars/rsc/bindings/node/
 # OS
 .DS_Store
 Thumbs.db
-
-# Rust
-target/
-Cargo.lock
 
 # Temporary files
 *.tmp

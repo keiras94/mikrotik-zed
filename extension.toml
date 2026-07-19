@@ -7,8 +7,8 @@ authors = ["keiras94"]
 repository = "https://github.com/keiras94/mikrotik-zed"
 
 [grammars.rsc]
-repository = "https://github.com/keiras94/mikrotik-rsc-grammar"
-rev = "318e73abb40e279cfb7666b11094f34cd7f22a49"
+repository = "/Users/Francisco/Developer/mikrotik-zed/grammar-bare.git"
+rev = "af68d9588c1565f77c9fe9778bbd397d4727b79b"
 
 [language_servers.rsc-ls]
 name = "RSC Language Server"
