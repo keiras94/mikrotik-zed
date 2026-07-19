@@ -1,0 +1,42 @@
+{
+  "name": "tree-sitter-rsc",
+  "version": "0.1.0",
+  "description": "MikroTik RouterOS Script grammar for tree-sitter",
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "install": "node-gyp rebuild",
+    "build-wasm": "tree-sitter build-wasm",
+    "playground": "tree-sitter build-wasm && tree-sitter playground"
+  },
+  "author": "Francisco",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-addon-api": "^8.0.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.24.0"
+  },
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ],
+  "tree-sitter": [
+    {
+      "scope": "source.rsc",
+      "file-types": ["rsc"],
+      "highlights": "queries/highlights.scm",
+      "injection-regex": "^rsc$"
+    }
+  ]
+}

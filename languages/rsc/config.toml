@@ -1,0 +1,13 @@
+name = "RSC"
+grammar = "rsc"
+path_suffixes = ["rsc"]
+line_comments = ["# "]
+autoclose_before = ";:.,=}])>\"' \t\n"
+
+[brackets]
+start = ["{", "[", "(", "\""]
+end = ["}", "]", ")", "\""]
+close = [true, true, true, true]
+newline = [true, false, false, false]
+
+word_characters = ["_", "-", "$"]
