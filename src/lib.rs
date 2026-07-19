@@ -8,11 +8,13 @@ const COMMANDS_TOML: &str = include_str!("../data/commands.toml");
 
 // ── Data structures ───────────────────────────────────────────────
 
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 struct CommandsFile {
     menus: Vec<MenuEntry>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Deserialize, Clone)]
 struct MenuEntry {
     path: String,
@@ -26,6 +28,7 @@ struct MenuEntry {
     read_only: Vec<ArgEntry>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Deserialize, Clone)]
 struct ArgEntry {
     name: String,
@@ -42,6 +45,7 @@ struct ArgEntry {
 
 // ── Extension state ───────────────────────────────────────────────
 
+#[allow(dead_code)]
 struct RscExtension {
     /// All known menu paths → their entries
     menus: Vec<MenuEntry>,
@@ -77,141 +81,6 @@ impl RscExtension {
             children_index,
         }
     }
-
-    /// Build a flat list of all known completions keyed by menu path.
-    /// Each key is a menu path, value is a list of (label, detail) pairs.
-    fn build_completion_data(&self) -> serde_json::Value {
-        let mut data = serde_json::Map::new();
-
-        // Root-level completions (root menus)
-        let roots = vec![
-            ("/ip", "IP menu — addresses, routes, firewall, DHCP, DNS"),
-            ("/ipv6", "IPv6 menu — addresses, DHCPv6, ND, firewall, routes"),
-            ("/interface", "Interface menu — bridge, VLAN, PPPoE, ethernet"),
-            ("/routing", "Routing menu — OSPF, BGP, tables, rules"),
-        ];
-        data.insert(
-            "__root__".to_string(),
-            serde_json::to_value(
-                roots
-                    .iter()
-                    .map(|(path, desc)| {
-                        serde_json::json!({"label": path, "detail": desc})
-                    })
-                    .collect::<Vec<_>>(),
-            )
-            .unwrap(),
-        );
-
-        // Common commands available at any menu level
-        let common_commands: Vec<serde_json::Value> = vec![
-            "add", "remove", "enable", "disable", "set", "get",
-            "print", "find", "export", "edit", "comment", "move", "reset",
-        ]
-        .into_iter()
-        .map(|cmd| {
-            serde_json::json!({"label": cmd, "detail": format!("{} — common RouterOS command", cmd)})
-        })
-        .collect();
-
-        // Build completions per menu
-        for menu in &self.menus {
-            let path = &menu.path;
-            let mut items: Vec<serde_json::Value> = Vec::new();
-
-            // Add common commands
-            items.extend(common_commands.clone());
-
-            // Add sub-menus (children)
-            if let Some(children) = self.children_index.get(path) {
-                for child_path in children {
-                    let name = child_path.rsplit('/').next().unwrap_or(child_path);
-                    if let Some(child) = self.menu_index.get(child_path) {
-                        items.push(serde_json::json!({
-                            "label": name,
-                            "detail": format!("{} — {}", child_path, child.menu_type),
-                            "kind": 19, // Module/namespace kind
-                        }));
-                    }
-                }
-            }
-
-            // Add writable arguments
-            for arg in &menu.arguments {
-                let mut detail = format!("{} — type: {}", arg.name, arg.arg_type);
-                if arg.required {
-                    detail.push_str(" [required]");
-                }
-                if !arg.description.is_empty() {
-                    detail.push_str(&format!("\n{}", arg.description));
-                }
-                items.push(serde_json::json!({
-                    "label": arg.name,
-                    "detail": detail,
-                    "kind": 10, // Property kind
-                    "insertText": format!("{}=", arg.name),
-                }));
-            }
-
-            data.insert(
-                path.clone(),
-                serde_json::json!(items),
-            );
-        }
-
-        serde_json::Value::Object(data)
-    }
-
-    /// Build hover data: menu → property → description
-    fn build_hover_data(&self) -> serde_json::Value {
-        let mut data = serde_json::Map::new();
-
-        for menu in &self.menus {
-            let path = &menu.path;
-            let mut props = serde_json::Map::new();
-
-            for arg in &menu.arguments {
-                let mut value = format!("**{}**\n\nType: `{}`", arg.name, arg.arg_type);
-                if arg.required {
-                    value.push_str("\n\n*Required*");
-                }
-                if !arg.description.is_empty() {
-                    value.push_str(&format!("\n\n{}", arg.description));
-                }
-                props.insert(arg.name.clone(), serde_json::Value::String(value));
-            }
-
-            for flag in &menu.flags {
-                let value = format!(
-                    "**{}** (flag)\n\nDescription: {}",
-                    flag.name,
-                    if flag.description.is_empty() {
-                        flag.arg_type.as_str()
-                    } else {
-                        flag.description.as_str()
-                    }
-                );
-                props.insert(flag.name.clone(), serde_json::Value::String(value));
-            }
-
-            for ro in &menu.read_only {
-                let mut value = format!(
-                    "**{}** (read-only)\n\nType: `{}`",
-                    ro.name, ro.arg_type
-                );
-                if !ro.description.is_empty() {
-                    value.push_str(&format!("\n\n{}", ro.description));
-                }
-                props.insert(ro.name.clone(), serde_json::Value::String(value));
-            }
-
-            if !props.is_empty() {
-                data.insert(path.clone(), serde_json::Value::Object(props));
-            }
-        }
-
-        serde_json::Value::Object(data)
-    }
 }
 
 // ── Extension trait implementation ───────────────────────────────
@@ -221,20 +90,28 @@ impl zed::Extension for RscExtension {
         RscExtension::load_commands()
     }
 
-    fn language_server_initialization_options(
+    fn language_server_command(
         &mut self,
         _language_server_id: &LanguageServerId,
-        _worktree: &Worktree,
-    ) -> Result<Option<serde_json::Value>> {
-        let completions = self.build_completion_data();
-        let hovers = self.build_hover_data();
+        worktree: &Worktree,
+    ) -> Result<zed::Command> {
+        let node = worktree
+            .which("node")
+            .ok_or_else(|| "node not found in PATH; RSC language server requires Node.js".to_string())?;
 
-        Ok(Some(serde_json::json!({
-            "rsc": {
-                "completions": completions,
-                "hoverData": hovers,
-            }
-        })))
+        // CARGO_MANIFEST_DIR is the crate root at build time — it equals the
+        // extension source root both during development and after Zed clones
+        // the extension submodule.
+        let ext_root = env!("CARGO_MANIFEST_DIR");
+
+        let ls_script = format!("{}/src/ls.mjs", ext_root);
+        let commands_path = format!("{}/data/commands.toml", ext_root);
+
+        Ok(zed::Command {
+            command: node,
+            args: vec![ls_script, commands_path],
+            env: worktree.shell_env(),
+        })
     }
 }
 
@@ -375,72 +252,6 @@ type = "Directory"
         assert_eq!(ip_children.len(), 2);
         assert!(ip_children.contains(&"/ip/address".to_string()));
         assert!(ip_children.contains(&"/ip/route".to_string()));
-    }
-
-    // ── Completions ──────────────────────────────────────────
-
-    #[test]
-    fn test_build_completion_data_has_root() {
-        let ext = RscExtension {
-            menus: vec![],
-            menu_index: HashMap::new(),
-            children_index: HashMap::new(),
-        };
-        let data = ext.build_completion_data();
-        assert!(data.get("__root__").is_some(), "should have root completions");
-    }
-
-    #[test]
-    fn test_build_completion_data_has_menus() {
-        let commands: CommandsFile =
-            toml::from_str(test_commands_toml()).unwrap();
-        let mut menu_index = HashMap::new();
-        for menu in &commands.menus {
-            menu_index.insert(menu.path.clone(), menu.clone());
-        }
-
-        let mut children_index: HashMap<String, Vec<String>> = HashMap::new();
-        children_index.insert(
-            "/ip".to_string(),
-            vec!["/ip/address".into(), "/ip/route".into()],
-        );
-
-        let ext = RscExtension {
-            menus: commands.menus,
-            menu_index,
-            children_index,
-        };
-
-        let data = ext.build_completion_data();
-        // Each menu path should have completion items
-        assert!(data.get("/ip/address").is_some());
-        assert!(data.get("/ip/route").is_some());
-        assert!(data.get("/ip/firewall/filter").is_some());
-    }
-
-    // ── Hover data ───────────────────────────────────────────
-
-    #[test]
-    fn test_build_hover_data() {
-        let commands: CommandsFile =
-            toml::from_str(test_commands_toml()).unwrap();
-        let mut menu_index = HashMap::new();
-        for menu in &commands.menus {
-            menu_index.insert(menu.path.clone(), menu.clone());
-        }
-
-        let ext = RscExtension {
-            menus: commands.menus,
-            menu_index,
-            children_index: HashMap::new(),
-        };
-
-        let hover = ext.build_hover_data();
-        // /ip/address should have hover data for its arguments
-        assert!(hover.get("/ip/address").is_some());
-        let addr_hover = &hover["/ip/address"];
-        assert!(addr_hover.get("address").is_some());
-        assert!(addr_hover.get("interface").is_some());
     }
 
     // ── Context detection (test helper) ──────────────────────────
