@@ -9,7 +9,7 @@ languages = ["languages/rsc"]
 
 [grammars.rsc]
 repository = "/Users/Francisco/Developer/mikrotik-zed/grammar-bare.git"
-rev = "af68d9588c1565f77c9fe9778bbd397d4727b79b"
+rev = "53a7ab10419852ba2dc027af80a1bed50757ab31"
 
 [language_servers.rsc-ls]
 name = "RSC Language Server"
