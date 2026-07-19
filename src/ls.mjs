@@ -133,16 +133,29 @@ for (const m of allMenus) {
   }
 }
 
+// Build root→child index from the first segment of every path.
+// This ensures root menus like /ip, /interface, /routing are
+// available even when they don't have their own TOML entry.
+const rootEntries = new Map();
+for (const m of allMenus) {
+  const parts = m.path.split("/"); // ["", "ip", "address"]
+  if (parts.length >= 2) {
+    const rootName = parts[1];
+    if (!rootEntries.has(rootName)) {
+      rootEntries.set(rootName, {
+        name: rootName,
+        path: "/" + rootName,
+        type: "Directory",
+      });
+    }
+  }
+}
+childNamesByParent.set("", [...rootEntries.values()]);
+
 // Convert Map-of-Maps to Map-of-arrays for easier consumption
 for (const [parent, children] of childNamesByParent) {
   childNamesByParent.set(parent, [...children.values()]);
 }
-
-// Root menus
-const rootMenus = allMenus.filter((m) => {
-  const parts = m.path.split("/");
-  return parts.length === 2; // e.g., /ip, /interface
-});
 
 // Standard RouterOS verbs available on most Directory-type menus
 const STANDARD_VERBS = [
@@ -176,6 +189,57 @@ function tokenize(text) {
     tokens.push(match[0]);
   }
   return tokens;
+}
+
+/**
+ * Build the "before cursor" context spanning multiple lines.
+ *
+ * RouterOS commands can span multiple lines – properties on subsequent
+ * lines are continuations of the same command.  This function walks
+ * backwards from the cursor line, collecting all lines that belong to
+ * the current command, stopping when it hits:
+ *   1. A blank/empty line (command boundary)
+ *   2. A line starting with `/` or `:` (new command start)
+ *
+ * Example:
+ *   /ip address add address=10.0.0.1
+ *       network=10.0.0.0         ← cursor at end
+ *       comment="test"
+ *   /interface print              ← stop here
+ *
+ * Returns a single string suitable for parseLine().
+ */
+function buildBeforeCursor(doc, lineIndex, character) {
+  const lines = doc.split("\n");
+  const parts = [];
+
+  // Current line (up to cursor position)
+  const currentPart = lines[lineIndex].slice(0, character);
+
+  // Cursor on a blank/empty line → no active command
+  if (currentPart.trim() === "") return "";
+
+  parts.push(currentPart);
+
+  // Walk backwards collecting continuation lines
+  for (let i = lineIndex - 1; i >= 0; i--) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Empty line → previous command boundary
+    if (trimmed === "") break;
+
+    // Line starting with `/` or `:` → this IS the command start; include it, then stop
+    if (trimmed.startsWith("/") || trimmed.startsWith(":")) {
+      parts.unshift(line);
+      break;
+    }
+
+    // Otherwise it's a continuation line → include and keep going
+    parts.unshift(line);
+  }
+
+  return parts.join(" ").trim();
 }
 
 /**
@@ -429,13 +493,15 @@ function getSubMenuCompletionItems(context) {
 }
 
 function getRootCompletionItems() {
-  return rootMenus.map((m) => ({
-    label: m.path,
+  const roots = childNamesByParent.get("");
+  if (!roots) return [];
+  return roots.map((r) => ({
+    label: r.path,
     kind: 9, // Class
-    detail: `root menu — ${m.path}`,
-    insertText: m.path,
+    detail: `root menu — ${r.path}`,
+    insertText: r.path,
     insertTextFormat: 1,
-    data: { source: "rsc-root", path: m.path },
+    data: { source: "rsc-root", path: r.path },
   }));
 }
 
@@ -455,14 +521,16 @@ function getRootCompletionItems() {
 function computeCompletions(beforeCursor) {
   const context = parseLine(beforeCursor);
 
-  // No path yet → suggest root menus (/, /ip, /interface, …)
-  if (!context.path || context.path === "") {
+  // No path yet (or just a bare "/") → suggest root menus
+  if (!context.path || context.path === "" || context.path === "/") {
     return getRootCompletionItems();
   }
 
-  // Typing a property value after = → suggest enum/bool/type values
+  // Typing a property value right after = → suggest enum/bool/type values.
+  // Only trigger when the = is the last character (user just typed name=);
+  // if there's already a value (name=value), fall through to general completions.
   const lastEq = context.lastToken.indexOf("=");
-  if (lastEq >= 0) {
+  if (lastEq >= 0 && lastEq === context.lastToken.length - 1) {
     const key = context.lastToken.slice(0, lastEq);
     return getValueCompletions(context, key);
   }
@@ -484,7 +552,12 @@ function computeCompletions(beforeCursor) {
 
 // ── Hover logic ──────────────────────────────────────────────────────
 
-function computeHover(doc, position) {
+/**
+ * @param {object} doc  – object with lineAt(n) → {text: string}
+ * @param {object} pos  – {line, character}
+ * @param {string} rawDoc – raw document text (for multi-line context)
+ */
+function computeHover(doc, position, rawDoc) {
   const line = doc.lineAt(position.line).text;
   const wordStart = findWordStart(line, position.character);
   const wordEnd = findWordEnd(line, position.character);
@@ -504,8 +577,8 @@ function computeHover(doc, position) {
     }
   }
 
-  // Check if it's a property name – scan the current menu
-  const beforeCursor = line.slice(0, position.character);
+  // Check if it's a property name – scan the current menu (multi-line aware)
+  const beforeCursor = buildBeforeCursor(rawDoc, position.line, position.character);
   const context = parseLine(beforeCursor);
   const menu = menuByPath.get(context.path);
   if (menu) {
@@ -602,11 +675,9 @@ function handleMessage(msg) {
     const doc = docs.get(uri);
     if (!doc) return { id: msg.id, result: { items: [] } };
 
-    // Only use the current line for context.  Previous lines contain
-    // separate statements that confuse the tokenizer.
-    const lines = doc.split("\n");
-    const currentLine = lines[pos.line] || "";
-    const beforeCursor = currentLine.slice(0, pos.character);
+    // Walk backwards from cursor to collect the full multi-line command
+    // (properties on subsequent lines belong to the same command).
+    const beforeCursor = buildBeforeCursor(doc, pos.line, pos.character);
     const items = computeCompletions(beforeCursor);
 
     return {
@@ -630,7 +701,7 @@ function handleMessage(msg) {
       lineAt: (n) => ({ text: lines[n] || "" }),
     };
 
-    const hover = computeHover(docObj, pos);
+    const hover = computeHover(docObj, pos, doc);
     return { id: msg.id, result: hover };
   }
 

@@ -15,9 +15,11 @@
     "release" "scan" "blink" "pause" "reload" "power-cycle"
   ] @keyword.function)
 
-; ── Other path segments and identifiers in menu_command ─────────
+; ── Other path segments in menu_command ─────────────────────────
+; Colored as @type (blue/cyan in most themes) instead of
+; @function.builtin (orange) for a more pleasant palette.
 (menu_command
-  (identifier) @function.builtin)
+  (identifier) @type)
 
 ; ── Global commands (:put, :local, :for, etc.) ─────────────────
 (global_command_name) @keyword
