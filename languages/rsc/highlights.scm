@@ -1,107 +1,140 @@
+; ── MikroTik RouterOS Script — highlights ────────────────────────
+; Color scheme (matches RouterOS terminal):
+;   Azul    = root menu (primer comando tras /)
+;   Verde   = sub-menús y comandos
+;   Naranja = propiedades/variables (name=value)
+;   Rojo    = strings
+;   Cyan    = números, IPs
+;   Gris    = comentarios
+
 ; ── Comments ─────────────────────────────────────────────────────
 (comment) @comment
 
-; ── Menu prefix / ────────────────────────────────────────────────
-(menu_prefix) @string.special.path
+; ── Menu prefix "/" ──────────────────────────────────────────────
+(menu_prefix) @punctuation.special
 
-; ── Known command verbs inside menu_command ──────────────────────
-; These are highlighted as keywords so they stand out from path
-; segments and property names.
+; ── Root menu — first command after / (azul) ────────────────────
+; e.g. "ip" in /ip route add …
+(root_menu
+  (identifier) @function)
+
+; ── Sub-menus — subsequent segments (verde) ────────────────────
+; e.g. "route", "add" in /ip route add …
+
+; ── Catch-all: bare identifiers in menu_command → naranja ───────
+; These are typically values after line continuation like `password=\nvalue`
+; Must come BEFORE sub_menu/named_param so specific rules override it
 (menu_command
-  [
-    "add" "remove" "set" "get" "print" "enable" "disable"
-    "find" "comment" "move" "export" "import" "edit"
-    "monitor" "reset-counters" "check" "clear" "flush" "renew"
-    "release" "scan" "blink" "pause" "reload" "power-cycle"
-  ] @keyword.function)
+  (identifier) @constant)
 
-; ── Other path segments in menu_command ─────────────────────────
-; Colored as @type (blue/cyan in most themes) instead of
-; @function.builtin (orange) for a more pleasant palette.
-(menu_command
-  (identifier) @type)
+(sub_menu
+  (identifier) @string)
 
-; ── Global commands (:put, :local, :for, etc.) ─────────────────
+; ── Action commands (morado) ──────────────────────────────────
+; Override sub_menu green for commands that modify/query state
+((sub_menu
+  (identifier) @keyword)
+  (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
+
+; ── Identifiers inside command_substitution / menu_continuation ──
+; Commands like "find", "set" inside [...] → verde
+(command_substitution
+  (identifier) @string)
+
+; Action commands inside [...] → morado
+((command_substitution
+  (identifier) @keyword)
+  (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
+
+(menu_continuation
+  (identifier) @string)
+
+; Action commands in continuation → morado
+((menu_continuation
+  (identifier) @keyword)
+  (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
+
+; ── Named parameters — property=value ──────────────────────────
+; Property name → amarillo (como en la terminal de MikroTik)
+(named_param
+  name: (identifier) @type)
+
+; Property value (identifiers like ether1, bridge) → naranja
+(named_param
+  value: (identifier) @constant)
+
+; ── = sign in named params ──────────────────────────────────────
+(named_param "=" @operator)
+
+; ── Global commands (:put, :local, :for, etc.) ──────────────────
 (global_command_name) @keyword
 
-; ── Control keywords ───────────────────────────────────────────
+; ── Control flow keywords ───────────────────────────────────────
 "do" @keyword.control
 "else" @keyword.control
 "while" @keyword.control
 
-; The = in `do = {` and `else = {` blocks
 (do_block "=" @operator)
 (else_block "=" @operator)
 
-; ── Booleans ───────────────────────────────────────────────────
+; ── Booleans ────────────────────────────────────────────────────
 (boolean_literal) @boolean
 
-; ── Nil ────────────────────────────────────────────────────────
+; ── Nil ─────────────────────────────────────────────────────────
 (nil_literal) @constant.builtin
 
-; ── Named parameters (property=value) ──────────────────────────
-; The name part before = is a property
-(named_param name: (identifier) @property)
-
-; The = sign in property=value assignments
-(named_param "=" @operator)
-
-; ── Array values ───────────────────────────────────────────────
-; Commas between array values
-(array "," @punctuation.delimiter)
-
-; ── Function calls ─────────────────────────────────────────────
+; ── Function calls ──────────────────────────────────────────────
 (function_call
   (identifier) @function.call)
 
-; ── Variables ──────────────────────────────────────────────────
+; ── Variables ───────────────────────────────────────────────────
 (variable_reference
   "$" @punctuation.special
   (identifier) @variable)
 
 ; ── Strings ────────────────────────────────────────────────────
-(string) @string
+(string) @string.special
 
-; ── Numbers ────────────────────────────────────────────────────
+; ── Numbers ─────────────────────────────────────────────────────
 (number) @number
 
-; ── IP addresses / prefixes ────────────────────────────────────
+; ── IP addresses / prefixes ─────────────────────────────────────
 (ip_address) @number
 (ip_prefix) @number
 
-; ── Arrays ─────────────────────────────────────────────────────
+; ── Arrays ──────────────────────────────────────────────────────
 (array
   "{" @punctuation.bracket
   "}" @punctuation.bracket)
 
-; ── Operators ──────────────────────────────────────────────────
+; ── Operators ───────────────────────────────────────────────────
 (operator) @operator
 
-; ── Brackets and punctuation ───────────────────────────────────
+; ── Brackets ────────────────────────────────────────────────────
 [
   "(" ")" "[" "]" "{" "}"
 ] @punctuation.bracket
 
-; ── Statement separator ───────────────────────────────────────
+; ── Statement separator ────────────────────────────────────────
 ";" @punctuation.delimiter
 
-; ── Line continuation ─────────────────────────────────────────
+; ── Line continuation ──────────────────────────────────────────
 (line_continuation) @punctuation.special
 
-; ── Parent navigation ──────────────────────────────────────────
+; ── Parent navigation ───────────────────────────────────────────
 (parent_navigation) @string.special.path
 
-; ── Command substitution ───────────────────────────────────────
+; ── Command substitution ────────────────────────────────────────
 (command_substitution
   "[" @punctuation.bracket
   "]" @punctuation.bracket)
 
-; ── Subexpressions ─────────────────────────────────────────────
+; ── Subexpressions ──────────────────────────────────────────────
 (subexpression
   "(" @punctuation.bracket
   ")" @punctuation.bracket)
 
-; ── Block delimiters ───────────────────────────────────────────
+; ── Block delimiters ────────────────────────────────────────────
 (block
   "{" @punctuation.bracket
   "}" @punctuation.bracket)

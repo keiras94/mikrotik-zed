@@ -4,12 +4,12 @@ description = "RSC language support for MikroTik RouterOS (7.22+) with syntax hi
 version = "0.1.0"
 schema_version = 1
 authors = ["keiras94"]
-repository = ""
+repository = "https://github.com/fravic/mikrotik-zed"
 languages = ["languages/rsc"]
 
 [grammars.rsc]
 repository = "/Users/Francisco/Developer/mikrotik-zed/grammar-bare.git"
-rev = "48e0c652db0774e55e2f1b734ccd4a244486c117"
+rev = "39bcae7c07c3147fcb5ad9029ff17aa4aa04f770"
 
 [language_servers.rsc-ls]
 name = "RSC Language Server"

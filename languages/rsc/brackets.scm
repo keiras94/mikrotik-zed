@@ -1,5 +1,5 @@
 ; ── Bracket matching for RSC ──────────────────────────────────
 
-("(" @opening ")" @closing)
-("[" @opening "]" @closing)
-("{" @opening "}" @closing)
+("(" @open ")" @close)
+("[" @open "]" @close)
+("{" @open "}" @close)

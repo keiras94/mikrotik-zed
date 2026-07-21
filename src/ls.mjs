@@ -87,8 +87,14 @@ if (!commandsPath) {
   process.exit(1);
 }
 
-const raw = readFileSync(commandsPath, "utf-8");
-const allMenus = parseToml(raw);
+let allMenus;
+try {
+  const raw = readFileSync(commandsPath, "utf-8");
+  allMenus = parseToml(raw);
+} catch (err) {
+  console.error(`[rsc-ls] FATAL: Failed to read or parse ${commandsPath}: ${err.message}`);
+  process.exit(1);
+}
 // Data loaded — menus index built below
 
 // Build lookups
@@ -166,6 +172,8 @@ const STANDARD_VERBS = [
 // ── LSP primitives ───────────────────────────────────────────────────
 
 function sendMessage(msg) {
+  // All LSP responses are JSON-RPC 2.0 — "jsonrpc" is required by the spec
+  if (!msg.jsonrpc) msg.jsonrpc = "2.0";
   const json = JSON.stringify(msg);
   const encoder = new TextEncoder();
   const header = `Content-Length: ${encoder.encode(json).length}\r\n\r\n`;
@@ -595,7 +603,7 @@ function computeHover(doc, position, rawDoc) {
   }
 
   // Check if it's a standard verb
-  if (STANDARD_VERBS.includes(word) || word === "add" || word === "remove" || word === "set") {
+  if (STANDARD_VERBS.includes(word)) {
     return {
       contents: { kind: "markdown", value: `**${word}**\n\nStandard RouterOS command.` },
     };
@@ -660,7 +668,10 @@ function handleMessage(msg) {
 
   if (msg.method === "textDocument/didChange") {
     const uri = msg.params.textDocument.uri;
-    docs.set(uri, msg.params.contentChanges[0].text);
+    const changes = msg.params.contentChanges;
+    if (Array.isArray(changes) && changes.length > 0) {
+      docs.set(uri, changes[0].text);
+    }
     return null;
   }
 
@@ -705,7 +716,14 @@ function handleMessage(msg) {
     return { id: msg.id, result: hover };
   }
 
-  // Unknown method
+  // Unknown method — respond with MethodNotFound per LSP spec (section 3.1.5)
+  if (msg.id !== undefined) {
+    return {
+      id: msg.id,
+      error: { code: -32601, message: `Method not found: ${msg.method}` },
+    };
+  }
+  // Notifications (no id) can be silently ignored
   return null;
 }
 

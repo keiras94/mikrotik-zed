@@ -24,11 +24,11 @@ All code, comments, documentation, commit messages, and PR descriptions **must b
 | Query files (`highlights.scm`, etc.) | Done | 5 query files in `languages/rsc/` |
 | Language config (`config.toml`) | Done | RSC, `.rsc` suffix, brackets, word chars |
 | Extraction script (`extract_commands.py`) | Done | Parses `llms-full.txt` → `commands.toml` |
-| `data/commands.toml` generated | Done | 655 lines, covers 4 target menus |
+| `data/commands.toml` generated | Done | 10,557 lines, 163 menus covering 4 target menus |
 | Grammar repo published | **Not done** | `extension.toml` rev is placeholder `0000...` |
 | Phase 1 tested in Zed | **Not done** | Needs "Install Dev Extension" validation |
 | Phase 1 published to zed-industries/extensions | **Not done** | PR not submitted |
-| Phase 2 language server | **Not done** | `src/` is empty, no `Cargo.toml` at root |
+| Phase 2 language server | Done | `src/lib.rs` and `src/ls.mjs` implemented |
 
 ---
 
@@ -57,27 +57,30 @@ mikrotik-zed/                          # Monorepo: extension + grammar
 │
 ├── languages/rsc/                     # Zed language queries
 │   ├── config.toml                    # Language config (name, suffixes, brackets)
-│   ├── highlights.scm                 # Syntax highlighting (96 lines)
-│   ├── brackets.scm                   # Bracket matching (20 lines)
-│   ├── indents.scm                    # Indentation rules (18 lines)
-│   ├── outline.scm                    # Outline/symbol view (10 lines)
-│   └── injections.scm                 # Code injections (placeholder)
+│   ├── highlights.scm                 # Syntax highlighting (97 lines)
+│   ├── brackets.scm                   # Bracket matching (5 lines)
+│   ├── indents.scm                    # Indentation rules (3 lines)
+│   ├── outline.scm                    # Outline/symbol view (7 lines)
+│   └── injections.scm                 # Code injections (empty — RSC has none)
 │
 ├── data/
-│   └── commands.toml                  # Generated command table (655 lines)
+│   └── commands.toml                  # Generated command table (10,557 lines)
 │
 ├── scripts/
 │   ├── extract_commands.py            # Extracts commands.toml from llms-full.txt
 │   └── debug_extract.py              # Debug helper
 │
-├── src/                               # Phase 2 — empty, no Rust LS yet
+├── src/                               # Phase 2 — language server (Rust + Node.js)
+│   ├── lib.rs                         # Zed extension trait impl (385 lines)
+│   └── ls.mjs                         # Node.js LSP server (753 lines)
 │
 └── .agents/skills/                    # OpenCode skills (auto-discovered)
     ├── routeros-reference.md          # How to look up RouterOS commands
     ├── zed-extension-dev.md           # Zed extension development patterns
     ├── tree-sitter-grammar.md         # Grammar maintenance guide
     ├── commands-extraction.md         # Regenerating commands.toml
-    └── language-server.md             # Phase 2 LS implementation guide
+    ├── language-server.md             # Phase 2 LS implementation guide
+    └── development-workflow.md        # General development workflow
 ```
 
 ### Key Facts

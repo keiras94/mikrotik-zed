@@ -56,9 +56,9 @@ struct RscExtension {
 }
 
 impl RscExtension {
-    fn load_commands() -> Self {
+    fn load_commands() -> std::result::Result<Self, String> {
         let commands: CommandsFile =
-            toml::from_str(COMMANDS_TOML).expect("Failed to parse embedded commands.toml");
+            toml::from_str(COMMANDS_TOML).map_err(|e| format!("Failed to parse commands.toml: {e}"))?;
 
         let mut menu_index = HashMap::new();
         let mut children_index: HashMap<String, Vec<String>> = HashMap::new();
@@ -75,11 +75,11 @@ impl RscExtension {
             }
         }
 
-        RscExtension {
+        Ok(RscExtension {
             menus: commands.menus,
             menu_index,
             children_index,
-        }
+        })
     }
 }
 
@@ -87,7 +87,19 @@ impl RscExtension {
 
 impl zed::Extension for RscExtension {
     fn new() -> Self {
-        RscExtension::load_commands()
+        match RscExtension::load_commands() {
+            Ok(ext) => ext,
+            Err(e) => {
+                // Log the error and return an empty extension rather than panicking.
+                // The LS will still start but without completions.
+                eprintln!("[rsc-ls] WARNING: {e}");
+                RscExtension {
+                    menus: vec![],
+                    menu_index: HashMap::new(),
+                    children_index: HashMap::new(),
+                }
+            }
+        }
     }
 
     fn language_server_command(
@@ -318,7 +330,7 @@ type = "Directory"
 
     #[test]
     fn test_menus_are_not_empty() {
-        let ext = RscExtension::load_commands();
+        let ext = RscExtension::load_commands().expect("load_commands should succeed");
         assert!(!ext.menus.is_empty(), "embedded commands.toml should have menus");
         assert!(ext.menus.len() >= 50, "should have at least 50 menus");
         assert!(!ext.menu_index.is_empty(), "menu_index should be populated");
@@ -326,7 +338,7 @@ type = "Directory"
 
     #[test]
     fn test_all_menus_have_path() {
-        let ext = RscExtension::load_commands();
+        let ext = RscExtension::load_commands().expect("load_commands should succeed");
         for menu in &ext.menus {
             assert!(!menu.path.is_empty(), "every menu should have a path");
             assert!(menu.path.starts_with('/'), "paths should start with /: {}", menu.path);
@@ -335,7 +347,7 @@ type = "Directory"
 
     #[test]
     fn test_target_root_menus_present() {
-        let ext = RscExtension::load_commands();
+        let ext = RscExtension::load_commands().expect("load_commands should succeed");
         let paths: Vec<&str> = ext.menus.iter().map(|m| m.path.as_str()).collect();
 
         // Should contain at least one entry from each target root menu
@@ -347,7 +359,7 @@ type = "Directory"
 
     #[test]
     fn test_no_unwanted_root_menus() {
-        let ext = RscExtension::load_commands();
+        let ext = RscExtension::load_commands().expect("load_commands should succeed");
         for menu in &ext.menus {
             assert!(
                 !menu.path.starts_with("/system/"),
@@ -366,7 +378,7 @@ type = "Directory"
 
     #[test]
     fn test_specific_menus_exist() {
-        let ext = RscExtension::load_commands();
+        let ext = RscExtension::load_commands().expect("load_commands should succeed");
 
         // These must exist per AGENTS.md scope
         assert!(ext.menu_index.contains_key("/ip/address"), "missing /ip/address");

@@ -1,5 +1,4 @@
-.PHONY: help generate test test-grammar parse highlight extract build clean install-dev validate \
-       generate-tests clean-tests update-tests
+.PHONY: help generate test test-grammar parse highlight extract build clean install-dev validate
 
 # ── Tree-sitter grammar ────────────────────────────────────────
 
@@ -20,17 +19,6 @@ parse: ## Parse a file and show syntax tree (usage: make parse FILE=test/example
 
 highlight: ## Highlight a file (usage: make highlight FILE=test/example.rsc)
 	cd grammars/rsc && npx tree-sitter highlight $(FILE)
-
-# ── Corpus management ─────────────────────────────────────────
-
-generate-tests: ## Generate test corpus from script definitions
-	python3 scripts/generate_tests.py
-
-clean-tests: ## Remove corpus tests with ERROR/MISSING nodes
-	python3 scripts/clean_tests.py
-
-update-tests: ## Regenerate expected output for all corpus tests
-	python3 scripts/regenerate_tests.py
 
 # ── Command extraction ─────────────────────────────────────────
 
