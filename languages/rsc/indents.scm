@@ -5,3 +5,5 @@
 (command_substitution "]" @outdent)
 (subexpression "(" @indent)
 (subexpression ")" @outdent)
+; Line continuation: after \ the next line should be indented
+(line_continuation) @indent

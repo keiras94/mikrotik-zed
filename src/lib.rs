@@ -361,14 +361,7 @@ type = "Directory"
     fn test_no_unwanted_root_menus() {
         let ext = RscExtension::load_commands().expect("load_commands should succeed");
         for menu in &ext.menus {
-            assert!(
-                !menu.path.starts_with("/system/"),
-                "should not contain /system: {}", menu.path
-            );
-            assert!(
-                !menu.path.starts_with("/tool/"),
-                "should not contain /tool: {}", menu.path
-            );
+            // /certificate is the only root menu still excluded
             assert!(
                 !menu.path.starts_with("/certificate"),
                 "should not contain /certificate: {}", menu.path
@@ -380,7 +373,7 @@ type = "Directory"
     fn test_specific_menus_exist() {
         let ext = RscExtension::load_commands().expect("load_commands should succeed");
 
-        // These must exist per AGENTS.md scope
+        // Core menus from the original Phase 2 scope
         assert!(ext.menu_index.contains_key("/ip/address"), "missing /ip/address");
         assert!(ext.menu_index.contains_key("/ip/route"), "missing /ip/route");
         assert!(ext.menu_index.contains_key("/ip/firewall/filter"), "missing /ip/firewall/filter");
@@ -392,6 +385,12 @@ type = "Directory"
         assert!(ext.menu_index.contains_key("/interface/ethernet"), "missing /interface/ethernet");
         assert!(ext.menu_index.contains_key("/routing/ospf"), "missing /routing/ospf");
         assert!(ext.menu_index.contains_key("/routing/bgp"), "missing /routing/bgp");
+
+        // Menus from expanded scope
+        assert!(ext.menu_index.contains_key("/system/clock"), "missing /system/clock");
+        assert!(ext.menu_index.contains_key("/tool/ping"), "missing /tool/ping");
+        assert!(ext.menu_index.contains_key("/queue/simple"), "missing /queue/simple");
+        assert!(ext.menu_index.contains_key("/user/aaa"), "missing /user/aaa");
     }
 }
 

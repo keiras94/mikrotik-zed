@@ -40,8 +40,13 @@ function parseToml(text) {
       section = "arg";
       continue;
     }
+    if (line.startsWith("[[menus.read_only]]")) {
+      currentMenu.read_only.push({ name: "", type: "" });
+      section = "ro";
+      continue;
+    }
     if (line.startsWith("[[menus]]")) {
-      currentMenu = { path: "", type: "", arguments: [], flags: [], children: [] };
+      currentMenu = { path: "", type: "", arguments: [], flags: [], read_only: [], children: [] };
       menus.push(currentMenu);
       section = "menu";
       continue;
@@ -68,6 +73,13 @@ function parseToml(text) {
       const last = currentMenu.flags[currentMenu.flags.length - 1];
       if (last) {
         if (key === "name") last.name = value;
+        if (key === "description") last.description = value;
+      }
+    } else if (section === "ro") {
+      const last = currentMenu.read_only[currentMenu.read_only.length - 1];
+      if (last) {
+        if (key === "name") last.name = value;
+        if (key === "type") last.type = value;
         if (key === "description") last.description = value;
       }
     } else if (section === "child") {
@@ -414,7 +426,7 @@ function getDetail(arg) {
   return `type: ${arg.type}`;
 }
 
-function getArgCompletionItems(context, cursorBeforeLastToken) {
+function getArgCompletionItems(context) {
   const menu = menuByPath.get(context.path);
   if (!menu) return [];
 
@@ -553,7 +565,7 @@ function computeCompletions(beforeCursor) {
   items.push(...getVerbCompletionItems(context));
 
   // 3. Command arguments (properties + flags) for the current menu
-  items.push(...getArgCompletionItems(context, beforeCursor));
+  items.push(...getArgCompletionItems(context));
 
   return items;
 }
@@ -614,13 +626,13 @@ function computeHover(doc, position, rawDoc) {
 
 function findWordStart(line, pos) {
   let i = pos;
-  while (i > 0 && /\w/.test(line[i - 1])) i--;
+  while (i > 0 && /[\w\/\-]/.test(line[i - 1])) i--;
   return i;
 }
 
 function findWordEnd(line, pos) {
   let i = pos;
-  while (i < line.length && /\w/.test(line[i])) i++;
+  while (i < line.length && /[\w\/\-]/.test(line[i])) i++;
   return i;
 }
 
