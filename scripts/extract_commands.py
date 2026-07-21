@@ -19,10 +19,14 @@ from pathlib import Path
 # Phase 2: full extraction for /interface, /ip, /ipv6
 # /routing keeps scoped whitelist
 TARGET_ROOTS = {
-    "/ip": None,          # None = include ALL sub-menus recursively
-    "/ipv6": None,        # None = include ALL sub-menus recursively
     "/interface": None,   # None = include ALL sub-menus recursively
+    "/ip": None,
+    "/ipv6": None,
     "/routing": {"ospf", "bgp", "table", "rule"},
+    "/queue": None,
+    "/system": None,
+    "/tool": None,
+    "/user": None,
 }
 
 # Firewall-specific sub-menus that need special path mapping
@@ -40,7 +44,7 @@ def should_include(menu_path: str) -> bool:
 
     # Normalize: strip trailing sub-command indicators like /monitor, /print, etc.
     parts = menu_path.strip("/").split("/")
-    if len(parts) < 2:
+    if not parts or not parts[0]:
         return False
 
     root = "/" + parts[0]
@@ -49,9 +53,13 @@ def should_include(menu_path: str) -> bool:
 
     allowed = TARGET_ROOTS[root]
 
-    # None means include ALL sub-menus under this root
+    # None means include ALL sub-menus under this root (including root itself)
     if allowed is None:
         return True
+
+    # Root-only path (e.g. "/user") with a whitelist → not allowed unless root is in whitelist
+    if len(parts) < 2:
+        return False
 
     # Otherwise, check if the first sub-menu is in the whitelist
     # Handle firewall specially: /ip/firewall/filter -> parts[1] = "firewall"
@@ -220,7 +228,7 @@ def generate_toml(menus: list[dict]) -> str:
         "# Auto-generated from llms-full.txt"
     )
     lines.append(
-        "# Covers: /interface, /ip, /ipv6 (full), /routing (scoped)"
+        "# Covers: /interface, /ip, /ipv6, /queue, /system, /tool, /user (full), /routing (scoped)"
     )
     lines.append("")
 

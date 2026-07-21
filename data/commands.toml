@@ -1,6 +1,6 @@
 # MikroTik RouterOS CLI Command Table
 # Auto-generated from llms-full.txt
-# Covers: /interface, /ip, /ipv6 (full), /routing (scoped)
+# Covers: /interface, /ip, /ipv6, /queue, /system, /tool, /user (full), /routing (scoped)
 
 [[menus]]
 path = "/interface/6to4"
@@ -21823,6 +21823,454 @@ type = "num"
 description = "Total number of bytes that have been processed through IPv6 fasttrack."
 
 [[menus]]
+path = "/queue/interface"
+type = "Directory"
+[[menus.arguments]]
+name = "queue"
+type = "enum (no-queue)"
+[[menus.read_only]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "default-queue"
+type = "enum (no-queue)"
+[[menus.read_only]]
+name = "active-queue"
+type = "enum (no-queue | queue-tree)"
+
+[[menus]]
+path = "/queue/monitor"
+type = "Command"
+[[menus.read_only]]
+name = "queued-packets"
+type = "num"
+[[menus.read_only]]
+name = "queued-bytes"
+type = "num"
+
+[[menus]]
+path = "/queue/simple"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "I"
+description = "invalid"
+[[menus.flags]]
+name = "D"
+description = "dynamic"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "target"
+type = ""
+[[menus.arguments]]
+name = "dst"
+type = ""
+[[menus.arguments]]
+name = "parent"
+type = "enum (none)"
+[[menus.arguments]]
+name = "packet-marks"
+type = ""
+[[menus.arguments]]
+name = "priority"
+type = "composite { , }"
+[[menus.arguments]]
+name = "queue"
+type = "composite { , }"
+[[menus.arguments]]
+name = "limit-at"
+type = "composite { , }"
+[[menus.arguments]]
+name = "max-limit"
+type = "composite { , }"
+[[menus.arguments]]
+name = "burst-limit"
+type = "composite { , }"
+[[menus.arguments]]
+name = "burst-threshold"
+type = "composite { , }"
+[[menus.arguments]]
+name = "burst-time"
+type = "composite { , }"
+[[menus.arguments]]
+name = "bucket-size"
+type = "composite { , }"
+[[menus.arguments]]
+name = "total-priority"
+type = "num"
+[[menus.arguments]]
+name = "total-queue"
+type = "enum"
+[[menus.arguments]]
+name = "total-limit-at"
+type = "num"
+[[menus.arguments]]
+name = "total-max-limit"
+type = "num"
+[[menus.arguments]]
+name = "total-burst-limit"
+type = "num"
+[[menus.arguments]]
+name = "total-burst-threshold"
+type = "num"
+[[menus.arguments]]
+name = "total-burst-time"
+type = "time"
+[[menus.arguments]]
+name = "total-bucket-size"
+type = "num"
+[[menus.arguments]]
+name = "time"
+type = ""
+[[menus.read_only]]
+name = "bytes"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-bytes"
+type = "num"
+[[menus.read_only]]
+name = "packets"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-packets"
+type = "num"
+[[menus.read_only]]
+name = "dropped"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-dropped"
+type = "num"
+[[menus.read_only]]
+name = "rate"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-rate"
+type = "num"
+[[menus.read_only]]
+name = "packet-rate"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-packet-rate"
+type = "num"
+[[menus.read_only]]
+name = "queued-packets"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-queued-packets"
+type = "num"
+[[menus.read_only]]
+name = "queued-bytes"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-queued-bytes"
+type = "num"
+[[menus.read_only]]
+name = "pcq-queues"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total-pcq-queues"
+type = "num"
+
+[[menus]]
+path = "/queue/simple/reset-counters"
+type = "Command"
+
+[[menus]]
+path = "/queue/simple/reset-counters-all"
+type = "Command"
+
+[[menus]]
+path = "/queue/tree"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "I"
+description = "invalid"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "parent"
+type = "enum (global)"
+required = true
+[[menus.arguments]]
+name = "packet-mark"
+type = ""
+[[menus.arguments]]
+name = "limit-at"
+type = "num"
+[[menus.arguments]]
+name = "queue"
+type = "enum"
+[[menus.arguments]]
+name = "priority"
+type = "num"
+[[menus.arguments]]
+name = "max-limit"
+type = "num"
+[[menus.arguments]]
+name = "burst-limit"
+type = "num"
+[[menus.arguments]]
+name = "burst-threshold"
+type = "num"
+[[menus.arguments]]
+name = "burst-time"
+type = "time"
+[[menus.arguments]]
+name = "bucket-size"
+type = "num"
+[[menus.read_only]]
+name = "bytes"
+type = "num"
+[[menus.read_only]]
+name = "packets"
+type = "num"
+[[menus.read_only]]
+name = "dropped"
+type = "num"
+[[menus.read_only]]
+name = "rate"
+type = "num"
+[[menus.read_only]]
+name = "packet-rate"
+type = "num"
+[[menus.read_only]]
+name = "queued-packets"
+type = "num"
+[[menus.read_only]]
+name = "queued-bytes"
+type = "num"
+[[menus.read_only]]
+name = "pcq-queues"
+type = "num"
+
+[[menus]]
+path = "/queue/tree/reset-counters"
+type = "Command"
+
+[[menus]]
+path = "/queue/tree/reset-counters-all"
+type = "Command"
+
+[[menus]]
+path = "/queue/type"
+type = "Directory"
+[[menus.flags]]
+name = "*"
+description = "default"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.arguments]]
+name = "name"
+type = "string"
+required = true
+[[menus.arguments]]
+name = "kind"
+type = "enum (bfifo | pfifo | red | sfq | pcq | mq-pfifo | none | codel | fq-codel | cake)"
+required = true
+[[menus.arguments]]
+name = "bfifo-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "pfifo-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "red-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "red-min-threshold"
+type = "num { }"
+[[menus.arguments]]
+name = "red-max-threshold"
+type = "num { }"
+[[menus.arguments]]
+name = "red-burst"
+type = "num { }"
+[[menus.arguments]]
+name = "red-avg-packet"
+type = "num { }"
+[[menus.arguments]]
+name = "sfq-perturb"
+type = "num { }"
+[[menus.arguments]]
+name = "sfq-allot"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-rate"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-classifier"
+type = "ubit (src-address, dst-address, src-port, dst-port)"
+[[menus.arguments]]
+name = "pcq-total-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-burst-rate"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-burst-threshold"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-burst-time"
+type = "time { }"
+[[menus.arguments]]
+name = "pcq-src-address-mask"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-dst-address-mask"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-src-address6-mask"
+type = "num { }"
+[[menus.arguments]]
+name = "pcq-dst-address6-mask"
+type = "num { }"
+[[menus.arguments]]
+name = "mq-pfifo-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "codel-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "codel-interval"
+type = "time { }"
+[[menus.arguments]]
+name = "codel-target"
+type = "time { }"
+[[menus.arguments]]
+name = "codel-ecn"
+type = "bool { }"
+[[menus.arguments]]
+name = "codel-ce-threshold"
+type = "time { }"
+[[menus.arguments]]
+name = "fq-codel-limit"
+type = "num { }"
+[[menus.arguments]]
+name = "fq-codel-interval"
+type = "time { }"
+[[menus.arguments]]
+name = "fq-codel-target"
+type = "time { }"
+[[menus.arguments]]
+name = "fq-codel-ecn"
+type = "bool { }"
+[[menus.arguments]]
+name = "fq-codel-ce-threshold"
+type = "time { }"
+[[menus.arguments]]
+name = "fq-codel-flows"
+type = "num { }"
+[[menus.arguments]]
+name = "fq-codel-memlimit"
+type = "num { }"
+[[menus.arguments]]
+name = "fq-codel-quantum"
+type = "num { }"
+[[menus.arguments]]
+name = "cake-bandwidth"
+type = "num { }"
+[[menus.arguments]]
+name = "cake-autorate-ingress"
+type = "bool { }"
+[[menus.arguments]]
+name = "cake-overhead"
+type = "num { }"
+[[menus.arguments]]
+name = "cake-mpu"
+type = "num { }"
+[[menus.arguments]]
+name = "cake-atm"
+type = "enum (none | atm | ptm)"
+[[menus.arguments]]
+name = "cake-overhead-scheme"
+type = ""
+[[menus.arguments]]
+name = "cake-rtt"
+type = "time { }"
+[[menus.arguments]]
+name = "cake-rtt-scheme"
+type = "enum (none | datacentre | lan | metro | regional | internet | oceanic | satellite | interplanetary)"
+[[menus.arguments]]
+name = "cake-diffserv"
+type = "enum (diffserv3 | diffserv4 | diffserv8 | besteffort | precedence)"
+[[menus.arguments]]
+name = "cake-flowmode"
+type = "enum (flowblind | srchost | dsthost | hosts | flows | dual-srchost | dual-dsthost | triple-isolate)"
+[[menus.arguments]]
+name = "cake-nat"
+type = "bool { }"
+[[menus.arguments]]
+name = "cake-wash"
+type = "bool { }"
+[[menus.arguments]]
+name = "cake-ack-filter"
+type = "enum (none | filter | aggressive)"
+[[menus.arguments]]
+name = "cake-memlimit"
+type = "num { }"
+[[menus.arguments]]
+name = "service"
+type = "ubit (ppp, login, hotspot, wireless, dhcp, ipsec, dot1x)"
+[[menus.arguments]]
+name = "called-id"
+type = "string"
+[[menus.arguments]]
+name = "domain"
+type = "string"
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46v)"
+required = true
+[[menus.arguments]]
+name = "secret"
+type = "string"
+[[menus.arguments]]
+name = "authentication-port"
+type = "num"
+[[menus.arguments]]
+name = "accounting-port"
+type = "num"
+[[menus.arguments]]
+name = "timeout"
+type = "time"
+[[menus.arguments]]
+name = "radsec-timeout"
+type = "time"
+[[menus.arguments]]
+name = "accounting-backup"
+type = "bool"
+[[menus.arguments]]
+name = "realm"
+type = "string"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "protocol"
+type = "enum (udp | radsec)"
+[[menus.arguments]]
+name = "certificate"
+type = "enum (none)"
+[[menus.arguments]]
+name = "require-message-auth"
+type = "enum (no | yes-for-request-resp)"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
 path = "/routing/bgp"
 type = "Directory"
 [[menus.arguments]]
@@ -23667,3 +24115,5430 @@ description = "safe mode session owner"
 [[menus.read_only]]
 name = "engine-id"
 type = "string"
+
+[[menus]]
+path = "/system/backup"
+type = "Directory"
+
+[[menus]]
+path = "/system/backup/cloud"
+type = "Directory"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "size"
+type = "num"
+[[menus.read_only]]
+name = "ros-version"
+type = "string"
+[[menus.read_only]]
+name = "date"
+type = "date"
+[[menus.read_only]]
+name = "status"
+type = "string"
+[[menus.read_only]]
+name = "secret-download-key"
+type = "string"
+
+[[menus]]
+path = "/system/backup/cloud/download-file"
+type = "Command"
+[[menus.arguments]]
+name = "secret-download-key"
+type = "string"
+[[menus.arguments]]
+name = "action"
+type = "enum (download | download-and-apply)"
+[[menus.arguments]]
+name = "dst-file"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/backup/cloud/remove-file"
+type = "Command"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/backup/cloud/upload-file"
+type = "Command"
+[[menus.arguments]]
+name = "action"
+type = "enum (upload | create-and-upload)"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "replace"
+type = "enum"
+[[menus.arguments]]
+name = "src-file"
+type = "file { }"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/backup/load"
+type = "Command"
+[[menus.arguments]]
+name = "name"
+type = "file { }"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "force-v6-to-v7-configuration-upgrade"
+type = "bool"
+
+[[menus]]
+path = "/system/backup/save"
+type = "Command"
+[[menus.arguments]]
+name = "name"
+type = "file { }"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "dont-encrypt"
+type = "bool"
+[[menus.arguments]]
+name = "encryption"
+type = "enum (aes-sha256 | rc4)"
+
+[[menus]]
+path = "/system/check-disk"
+type = "Command"
+
+[[menus]]
+path = "/system/check-installation"
+type = "Command"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/clock"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "time"
+type = "date"
+[[menus.arguments]]
+name = "date"
+type = "date"
+[[menus.arguments]]
+name = "time-zone-autodetect"
+type = "bool"
+[[menus.arguments]]
+name = "time-zone-name"
+type = "enum"
+[[menus.read_only]]
+name = "gmt-offset"
+type = "timezone"
+[[menus.read_only]]
+name = "dst-active"
+type = "bool"
+
+[[menus]]
+path = "/system/clock/manual"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "time-zone"
+type = "timezone"
+[[menus.arguments]]
+name = "dst-delta"
+type = "timezone"
+[[menus.arguments]]
+name = "dst-start"
+type = "date"
+[[menus.arguments]]
+name = "dst-end"
+type = "date"
+
+[[menus]]
+path = "/system/console"
+type = "Directory"
+[[menus.flags]]
+name = "*"
+description = ""
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "W"
+description = ""
+[[menus.flags]]
+name = "U"
+description = ""
+[[menus.flags]]
+name = "F"
+description = ""
+[[menus.arguments]]
+name = "port"
+type = "enum"
+[[menus.arguments]]
+name = "channel"
+type = "num"
+[[menus.arguments]]
+name = "term"
+type = "string"
+[[menus.read_only]]
+name = "vcno"
+type = "num"
+
+[[menus]]
+path = "/system/console/screen"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "line-count"
+type = "enum (25 | 40 | 50)"
+[[menus.arguments]]
+name = "blank-interval"
+type = "enum (never | 1min | 10min | 60min)"
+
+[[menus]]
+path = "/system/dashboard/settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "uplink-interfaces"
+type = ""
+
+[[menus]]
+path = "/system/dashboard/show"
+type = "Command"
+[[menus.read_only]]
+name = "model"
+type = "string"
+[[menus.read_only]]
+name = "board-name"
+type = "string"
+[[menus.read_only]]
+name = "identity"
+type = "string"
+[[menus.read_only]]
+name = "version"
+type = "string"
+[[menus.read_only]]
+name = "uptime"
+type = "time"
+[[menus.read_only]]
+name = "cpu-usage"
+type = "num"
+[[menus.read_only]]
+name = "memory-usage"
+type = "composite { , }"
+[[menus.read_only]]
+name = "hdd-usage"
+type = "composite { , }"
+[[menus.read_only]]
+name = "ether"
+type = ""
+[[menus.read_only]]
+name = "wifi"
+type = ""
+[[menus.read_only]]
+name = "total-bw"
+type = ""
+[[menus.read_only]]
+name = "uplink-bw"
+type = ""
+[[menus.read_only]]
+name = "ether-bw"
+type = ""
+[[menus.read_only]]
+name = "wifi-bw"
+type = ""
+[[menus.read_only]]
+name = "lte-bw"
+type = ""
+
+[[menus]]
+path = "/system/default-configuration"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "script"
+type = "string"
+[[menus.read_only]]
+name = "caps-mode-script"
+type = "string"
+[[menus.read_only]]
+name = "wps-sync-mode-script"
+type = "string"
+[[menus.read_only]]
+name = "custom-script"
+type = "string"
+
+[[menus]]
+path = "/system/default-configuration/caps-mode-script"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "caps-mode-script"
+type = "string"
+
+[[menus]]
+path = "/system/default-configuration/custom-script"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "custom-script"
+type = "string"
+
+[[menus]]
+path = "/system/default-configuration/script"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "script"
+type = "string"
+
+[[menus]]
+path = "/system/default-configuration/wps-sync-mode-script"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "wps-sync-mode-script"
+type = "string"
+
+[[menus]]
+path = "/system/device-mode"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "mode"
+type = "enum"
+[[menus.read_only]]
+name = "allowed-versions"
+type = "string"
+[[menus.read_only]]
+name = "flagged"
+type = "bool"
+[[menus.read_only]]
+name = "flagging-enabled"
+type = "bool"
+[[menus.read_only]]
+name = "scheduler"
+type = "bool"
+[[menus.read_only]]
+name = "socks"
+type = "bool"
+[[menus.read_only]]
+name = "fetch"
+type = "bool"
+[[menus.read_only]]
+name = "pptp"
+type = "bool"
+[[menus.read_only]]
+name = "l2tp"
+type = "bool"
+[[menus.read_only]]
+name = "bandwidth-test"
+type = "bool"
+[[menus.read_only]]
+name = "traffic-gen"
+type = "bool"
+[[menus.read_only]]
+name = "sniffer"
+type = "bool"
+[[menus.read_only]]
+name = "ipsec"
+type = "bool"
+[[menus.read_only]]
+name = "romon"
+type = "bool"
+[[menus.read_only]]
+name = "proxy"
+type = "bool"
+[[menus.read_only]]
+name = "hotspot"
+type = "bool"
+[[menus.read_only]]
+name = "smb"
+type = "bool"
+[[menus.read_only]]
+name = "email"
+type = "bool"
+[[menus.read_only]]
+name = "zerotier"
+type = "bool"
+[[menus.read_only]]
+name = "container"
+type = "bool"
+[[menus.read_only]]
+name = "install-any-version"
+type = "bool"
+[[menus.read_only]]
+name = "partitions"
+type = "bool"
+[[menus.read_only]]
+name = "routerboard"
+type = "bool"
+[[menus.read_only]]
+name = "attempt-count"
+type = "num"
+
+[[menus]]
+path = "/system/device-mode/update"
+type = "Command"
+[[menus.arguments]]
+name = "mode"
+type = "enum"
+[[menus.arguments]]
+name = "flagged"
+type = "bool"
+[[menus.arguments]]
+name = "flagging-enabled"
+type = "bool"
+[[menus.arguments]]
+name = "scheduler"
+type = "bool"
+[[menus.arguments]]
+name = "socks"
+type = "bool"
+[[menus.arguments]]
+name = "fetch"
+type = "bool"
+[[menus.arguments]]
+name = "pptp"
+type = "bool"
+[[menus.arguments]]
+name = "l2tp"
+type = "bool"
+[[menus.arguments]]
+name = "bandwidth-test"
+type = "bool"
+[[menus.arguments]]
+name = "traffic-gen"
+type = "bool"
+[[menus.arguments]]
+name = "sniffer"
+type = "bool"
+[[menus.arguments]]
+name = "ipsec"
+type = "bool"
+[[menus.arguments]]
+name = "romon"
+type = "bool"
+[[menus.arguments]]
+name = "proxy"
+type = "bool"
+[[menus.arguments]]
+name = "hotspot"
+type = "bool"
+[[menus.arguments]]
+name = "smb"
+type = "bool"
+[[menus.arguments]]
+name = "email"
+type = "bool"
+[[menus.arguments]]
+name = "zerotier"
+type = "bool"
+[[menus.arguments]]
+name = "container"
+type = "bool"
+[[menus.arguments]]
+name = "install-any-version"
+type = "bool"
+[[menus.arguments]]
+name = "partitions"
+type = "bool"
+[[menus.arguments]]
+name = "routerboard"
+type = "bool"
+[[menus.arguments]]
+name = "activation-timeout"
+type = "time"
+[[menus.read_only]]
+name = "update"
+type = "string"
+
+[[menus]]
+path = "/system/gps"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "channel"
+type = "num"
+[[menus.arguments]]
+name = "init-channel"
+type = "num"
+[[menus.arguments]]
+name = "init-string"
+type = ""
+[[menus.arguments]]
+name = "set-system-time"
+type = "bool"
+[[menus.arguments]]
+name = "coordinate-format"
+type = "enum (dms | dd | ddmm)"
+[[menus.arguments]]
+name = "gps-antenna-select"
+type = "enum (internal | external)"
+
+[[menus]]
+path = "/system/gps/monitor"
+type = "Command"
+[[menus.read_only]]
+name = "date-and-time"
+type = "date"
+[[menus.read_only]]
+name = "latitude"
+type = "string"
+[[menus.read_only]]
+name = "longitude"
+type = "string"
+[[menus.read_only]]
+name = "altitude"
+type = "string"
+[[menus.read_only]]
+name = "speed"
+type = "string"
+[[menus.read_only]]
+name = "destination-bearing"
+type = "string"
+[[menus.read_only]]
+name = "true-bearing"
+type = "string"
+[[menus.read_only]]
+name = "magnetic-bearing"
+type = "string"
+[[menus.read_only]]
+name = "valid"
+type = "bool"
+[[menus.read_only]]
+name = "satellites"
+type = "num"
+[[menus.read_only]]
+name = "fix-quality"
+type = "num"
+[[menus.read_only]]
+name = "horizontal-dilution"
+type = "num"
+[[menus.read_only]]
+name = "data-age"
+type = ""
+
+[[menus]]
+path = "/system/health"
+type = "Directory"
+[[menus.arguments]]
+name = "state-after-reboot"
+type = "bool"
+[[menus.read_only]]
+name = "core"
+type = "num"
+[[menus.read_only]]
+name = "3.3v"
+type = "num"
+[[menus.read_only]]
+name = "5v"
+type = "num"
+[[menus.read_only]]
+name = "12v"
+type = "num"
+[[menus.read_only]]
+name = "lm87-temp"
+type = "num"
+[[menus.read_only]]
+name = "cpu-temp"
+type = "num"
+[[menus.read_only]]
+name = "board-temp"
+type = "num"
+[[menus.read_only]]
+name = "voltage1"
+type = "num"
+[[menus.read_only]]
+name = "voltage2"
+type = "num"
+[[menus.read_only]]
+name = "voltage3"
+type = "num"
+[[menus.read_only]]
+name = "voltage4"
+type = "num"
+[[menus.read_only]]
+name = "voltage5"
+type = "num"
+[[menus.read_only]]
+name = "voltage6"
+type = "num"
+[[menus.read_only]]
+name = "voltage7"
+type = "num"
+[[menus.read_only]]
+name = "voltage8"
+type = "num"
+[[menus.read_only]]
+name = "voltage9"
+type = "num"
+[[menus.read_only]]
+name = "voltage10"
+type = "num"
+[[menus.read_only]]
+name = "temp1"
+type = "num"
+[[menus.read_only]]
+name = "temp2"
+type = "num"
+[[menus.read_only]]
+name = "temp3"
+type = "num"
+[[menus.read_only]]
+name = "fan1"
+type = "num"
+[[menus.read_only]]
+name = "fan2"
+type = "num"
+[[menus.read_only]]
+name = "fan3"
+type = "num"
+[[menus.read_only]]
+name = "state"
+type = "bool"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "value"
+type = ""
+[[menus.read_only]]
+name = "type"
+type = "enum (C | RPM | V | A | W | | )"
+
+[[menus]]
+path = "/system/health/settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "fan-full-speed-temp"
+type = "num { }"
+[[menus.arguments]]
+name = "fan-target-temp"
+type = "num { }"
+[[menus.arguments]]
+name = "fan-min-speed-percent"
+type = "num { }"
+[[menus.arguments]]
+name = "fan-control-interval"
+type = "time { }"
+[[menus.arguments]]
+name = "fan-mode"
+type = "enum (manual | auto)"
+[[menus.arguments]]
+name = "use-fan"
+type = "enum (auxiliary | main)"
+[[menus.arguments]]
+name = "use-fan2"
+type = "enum (auxiliary | main)"
+[[menus.arguments]]
+name = "fan-switch"
+type = "enum (auto | on | off)"
+[[menus.arguments]]
+name = "fan-on-threshold"
+type = "num"
+[[menus.arguments]]
+name = "cpu-overtemp-check"
+type = "bool"
+[[menus.arguments]]
+name = "cpu-overtemp-threshold"
+type = "num"
+[[menus.arguments]]
+name = "cpu-overtemp-startup-delay"
+type = "time"
+[[menus.read_only]]
+name = "active-fan"
+type = "enum (auxiliary | main | none)"
+[[menus.read_only]]
+name = "active-fan2"
+type = "enum (auxiliary | main | none)"
+
+[[menus]]
+path = "/system/health/settings/detect-fans"
+type = "Command"
+
+[[menus]]
+path = "/system/history"
+type = "Directory"
+[[menus.flags]]
+name = "U"
+description = ""
+[[menus.flags]]
+name = "R"
+description = ""
+[[menus.flags]]
+name = "F"
+description = ""
+[[menus.read_only]]
+name = "redo"
+type = "cfg"
+[[menus.read_only]]
+name = "undo"
+type = "cfg"
+[[menus.read_only]]
+name = "action"
+type = "string"
+[[menus.read_only]]
+name = "by"
+type = "string"
+[[menus.read_only]]
+name = "policy"
+type = ""
+[[menus.read_only]]
+name = "time"
+type = "date"
+[[menus.read_only]]
+name = "trace"
+type = "string"
+
+[[menus]]
+path = "/system/identity"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "name"
+type = "string"
+
+[[menus]]
+path = "/system/leds"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "*"
+description = ""
+[[menus.arguments]]
+name = "type"
+type = "enum (interface-status | interface-receive | interface-transmit | interface-activity | wireless-s..."
+required = true
+[[menus.arguments]]
+name = "leds"
+type = ""
+[[menus.arguments]]
+name = "interface"
+type = ""
+[[menus.arguments]]
+name = "modem-signal-threshold"
+type = "num { }"
+description = "RSSI threshold"
+[[menus.arguments]]
+name = "color"
+type = ""
+
+[[menus]]
+path = "/system/leds/settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "all-leds-off"
+type = "enum (never | immediate | after-1min | after-1h)"
+
+[[menus]]
+path = "/system/license"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "software-id"
+type = "string"
+[[menus.read_only]]
+name = "old-software-id"
+type = "string"
+[[menus.read_only]]
+name = "nlevel"
+type = "num"
+[[menus.read_only]]
+name = "features"
+type = "ubit (AP, synchronous, radiolan, wireless, extra-channels, , , )"
+[[menus.read_only]]
+name = "expires-in"
+type = "time"
+[[menus.read_only]]
+name = "system-id"
+type = "string"
+[[menus.read_only]]
+name = "level"
+type = "enum (free | p1 | p10 | p-unlimited)"
+[[menus.read_only]]
+name = "limited-upgrades"
+type = "bool"
+[[menus.read_only]]
+name = "next-renewal-at"
+type = "date"
+[[menus.read_only]]
+name = "deadline-at"
+type = "date"
+
+[[menus]]
+path = "/system/license/generate-new-id"
+type = "Command"
+
+[[menus]]
+path = "/system/license/output"
+type = "Command"
+
+[[menus]]
+path = "/system/license/renew"
+type = "Command"
+[[menus.arguments]]
+name = "account"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "level"
+type = "enum (p1 | p10 | p-unlimited)"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/logging"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.flags]]
+name = "*"
+description = ""
+[[menus.flags]]
+name = "Y"
+description = ""
+[[menus.arguments]]
+name = "topics"
+type = ""
+[[menus.arguments]]
+name = "prefix"
+type = "string"
+[[menus.arguments]]
+name = "regex"
+type = "string"
+[[menus.arguments]]
+name = "action"
+type = "enum"
+
+[[menus]]
+path = "/system/logging/action"
+type = "Directory"
+[[menus.flags]]
+name = "*"
+description = ""
+[[menus.flags]]
+name = "Y"
+description = ""
+[[menus.arguments]]
+name = "name"
+type = "string"
+required = true
+[[menus.arguments]]
+name = "target"
+type = "enum (memory | disk | echo | remote | email | script | cmr)"
+required = true
+[[menus.arguments]]
+name = "memory-lines"
+type = "num { }"
+[[menus.arguments]]
+name = "memory-stop-on-full"
+type = "bool { }"
+[[menus.arguments]]
+name = "disk-file-name"
+type = "string { }"
+[[menus.arguments]]
+name = "disk-lines-per-file"
+type = "num { }"
+[[menus.arguments]]
+name = "disk-file-count"
+type = "num { }"
+[[menus.arguments]]
+name = "disk-stop-on-full"
+type = "bool { }"
+[[menus.arguments]]
+name = "remote"
+type = ""
+[[menus.arguments]]
+name = "remote-port"
+type = "num { }"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "remote-log-format"
+type = "enum (default | syslog | cef)"
+[[menus.arguments]]
+name = "remote-protocol"
+type = "enum (udp | tcp | tls)"
+[[menus.arguments]]
+name = "check-certificate"
+type = "bool { }"
+[[menus.arguments]]
+name = "cef-event-delimiter"
+type = "string { }"
+[[menus.arguments]]
+name = "syslog-time-format"
+type = "enum (bsd-syslog | iso8601)"
+[[menus.arguments]]
+name = "syslog-facility"
+type = "enum (kern | user | mail | daemon | auth | syslog | lpr | news | uucp | cron | authpriv | ftp | n..."
+[[menus.arguments]]
+name = "syslog-severity"
+type = "enum (auto | emergency | alert | critical | error | warning | notice | info | debug)"
+[[menus.arguments]]
+name = "email-to"
+type = "string { }"
+[[menus.arguments]]
+name = "email-cc"
+type = ""
+[[menus.arguments]]
+name = "email-start-tls"
+type = "bool { }"
+[[menus.arguments]]
+name = "remember"
+type = "bool { }"
+[[menus.arguments]]
+name = "add-topics-string"
+type = "bool { }"
+[[menus.arguments]]
+name = "script"
+type = "enum ()"
+[[menus.arguments]]
+name = "vrf"
+type = "enum ()"
+
+[[menus]]
+path = "/system/logging/action/clear"
+type = "Command"
+[[menus.arguments]]
+name = "action"
+type = "enum"
+
+[[menus]]
+path = "/system/note"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "show-at-login"
+type = "bool"
+[[menus.arguments]]
+name = "show-at-cli-login"
+type = "bool"
+[[menus.arguments]]
+name = "note"
+type = "string"
+
+[[menus]]
+path = "/system/ntp"
+type = "Directory"
+
+[[menus]]
+path = "/system/ntp/client"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "mode"
+type = "enum (unicast | broadcast | multicast | manycast)"
+[[menus.arguments]]
+name = "servers"
+type = ""
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.read_only]]
+name = "freq-drift"
+type = "num"
+[[menus.read_only]]
+name = "status"
+type = "enum (stopped | waiting | synchronized | using-local-clock)"
+[[menus.read_only]]
+name = "synced-server"
+type = "address (flags=46D)"
+[[menus.read_only]]
+name = "synced-stratum"
+type = "num"
+[[menus.read_only]]
+name = "system-offset"
+type = "num"
+
+[[menus]]
+path = "/system/ntp/client/reset-freq-drift"
+type = "Command"
+
+[[menus]]
+path = "/system/ntp/client/servers"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "D"
+description = ""
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46D)"
+required = true
+[[menus.arguments]]
+name = "min-poll"
+type = "num"
+[[menus.arguments]]
+name = "max-poll"
+type = "num"
+[[menus.arguments]]
+name = "iburst"
+type = "bool"
+[[menus.arguments]]
+name = "auth-key"
+type = "enum (none)"
+[[menus.read_only]]
+name = "resolved-address"
+type = "address (flags=46)"
+
+[[menus]]
+path = "/system/ntp/key"
+type = "Directory"
+[[menus.arguments]]
+name = "key-id"
+type = "num"
+required = true
+[[menus.arguments]]
+name = "key-val"
+type = "string"
+required = true
+
+[[menus]]
+path = "/system/ntp/monitor-peers"
+type = "Command"
+[[menus.read_only]]
+name = "type"
+type = "string"
+[[menus.read_only]]
+name = "address"
+type = "address (flags=46)"
+[[menus.read_only]]
+name = "refid"
+type = "string"
+[[menus.read_only]]
+name = "stratum"
+type = "num"
+[[menus.read_only]]
+name = "hpoll"
+type = "num"
+[[menus.read_only]]
+name = "ppoll"
+type = "num"
+[[menus.read_only]]
+name = "root-delay"
+type = "num"
+[[menus.read_only]]
+name = "root-disp"
+type = "num"
+[[menus.read_only]]
+name = "offset"
+type = "num"
+[[menus.read_only]]
+name = "delay"
+type = "num"
+[[menus.read_only]]
+name = "disp"
+type = "num"
+[[menus.read_only]]
+name = "jitter"
+type = "num"
+
+[[menus]]
+path = "/system/ntp/server"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "broadcast"
+type = "bool"
+[[menus.arguments]]
+name = "multicast"
+type = "bool"
+[[menus.arguments]]
+name = "manycast"
+type = "bool"
+[[menus.arguments]]
+name = "broadcast-addresses"
+type = ""
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.arguments]]
+name = "use-local-clock"
+type = "bool"
+[[menus.arguments]]
+name = "local-clock-stratum"
+type = "num"
+[[menus.arguments]]
+name = "auth-key"
+type = "enum (none)"
+
+[[menus]]
+path = "/system/package"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "A"
+description = ""
+[[menus.read_only]]
+name = "name"
+type = "string"
+description = "Name of the package."
+[[menus.read_only]]
+name = "version"
+type = "string"
+description = "Version of the package."
+[[menus.read_only]]
+name = "build-time"
+type = "date"
+description = "Date and time the package was built."
+[[menus.read_only]]
+name = "scheduled"
+type = "enum ( | scheduled for uninstall | scheduled for disable | scheduled for enable | Use `apply-chan..."
+description = "Scheduled action for the package after the next reboot."
+[[menus.read_only]]
+name = "bundle"
+type = "enum"
+description = "The bundle package this package belongs to."
+[[menus.read_only]]
+name = "size"
+type = "num"
+description = "Size of the package in bytes."
+
+[[menus]]
+path = "/system/package/apply-changes"
+type = "Command"
+[[menus.arguments]]
+name = "ignore-missing"
+type = "bool"
+description = "Upgrade only the RouterOS main package, omitting packages that are missing or not uploaded."
+unset = true
+
+[[menus]]
+path = "/system/package/disable"
+type = "Command"
+
+[[menus]]
+path = "/system/package/downgrade"
+type = "Command"
+
+[[menus]]
+path = "/system/package/enable"
+type = "Command"
+
+[[menus]]
+path = "/system/package/local-update"
+type = "Directory"
+[[menus.arguments]]
+name = "download"
+type = "bool"
+description = "Whether to download available packages from the local package server."
+[[menus.read_only]]
+name = "source"
+type = ""
+[[menus.read_only]]
+name = "name"
+type = "string"
+description = "Name of the package."
+[[menus.read_only]]
+name = "version"
+type = "string"
+description = "Version of the package."
+[[menus.read_only]]
+name = "status"
+type = "enum (installed | downloaded | downloading | scheduled | available)"
+description = "Current status of the package."
+[[menus.read_only]]
+name = "completed"
+type = "num"
+description = "Download completion percentage."
+
+[[menus]]
+path = "/system/package/local-update/download"
+type = "Command"
+
+[[menus]]
+path = "/system/package/local-update/download-all"
+type = "Command"
+[[menus.arguments]]
+name = "download-beta"
+type = "bool"
+description = "Whether to include beta packages when downloading all compatible packages."
+[[menus.arguments]]
+name = "reboot-after-download"
+type = "bool"
+description = "Whether to automatically reboot the device after all packages finish downloading."
+
+[[menus]]
+path = "/system/package/local-update/mirror"
+type = "Command"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+description = "Whether to enable periodic check and download of packages from the local package server."
+[[menus.arguments]]
+name = "primary-server"
+type = ""
+[[menus.arguments]]
+name = "secondary-server"
+type = ""
+[[menus.arguments]]
+name = "check-interval"
+type = "time"
+description = "Time interval at which the device checks the local package server for new package availability. If a new package is located, the package download begins. Only downloads the packages that are not already present on the device."
+[[menus.arguments]]
+name = "user"
+type = "string"
+description = "Username for accessing the local package server."
+[[menus.arguments]]
+name = "password"
+type = "string"
+description = "Password for accessing the local package server."
+[[menus.read_only]]
+name = "software-id"
+type = "string"
+description = "Software ID of the device."
+
+[[menus]]
+path = "/system/package/local-update/refresh"
+type = "Command"
+
+[[menus]]
+path = "/system/package/local-update/update-package-source"
+type = "Directory"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "user"
+type = "string"
+description = "Username for accessing the local package server."
+required = true
+[[menus.arguments]]
+name = "password"
+type = "string"
+description = "Password for accessing the local package server."
+required = true
+
+[[menus]]
+path = "/system/package/uninstall"
+type = "Command"
+
+[[menus]]
+path = "/system/package/unschedule"
+type = "Command"
+
+[[menus]]
+path = "/system/package/update"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "channel"
+type = "enum ()"
+description = "Upgrade [channel](#channel) to use when checking for new versions."
+[[menus.arguments]]
+name = "mode"
+type = "enum ()"
+description = "Protocol for connecting to the MikroTik download server. Use `http` only if your network blocks HTTPS. HTTPS is recommended."
+[[menus.arguments]]
+name = "check-certificate"
+type = "enum ()"
+description = "Whether and how to validate the server SSL certificate. Always use `yes` to ensure a secure connection."
+[[menus.arguments]]
+name = "ip-version"
+type = "enum ()"
+description = "IP version preference for connecting to the MikroTik download server."
+[[menus.read_only]]
+name = "installed-version"
+type = "string"
+description = "Currently installed RouterOS version."
+[[menus.read_only]]
+name = "latest-version"
+type = "string"
+description = "Latest available RouterOS version in the selected [channel](#channel)."
+[[menus.read_only]]
+name = "status"
+type = "string"
+description = "Current status of the update process (for example, `New version is available`)."
+
+[[menus]]
+path = "/system/package/update/cancel"
+type = "Command"
+
+[[menus]]
+path = "/system/package/update/check-for-updates"
+type = "Command"
+[[menus.arguments]]
+name = "fetch-changelog"
+type = "switch"
+description = "Whether to fetch the changelog along with the update check."
+[[menus.read_only]]
+name = "changelog"
+type = "string"
+description = "Changelog text for the latest available version."
+
+[[menus]]
+path = "/system/package/update/download"
+type = "Command"
+[[menus.arguments]]
+name = "ignore-missing"
+type = "bool"
+description = "Download only the RouterOS main package, omitting packages that are missing or not uploaded."
+unset = true
+
+[[menus]]
+path = "/system/package/update/install"
+type = "Command"
+[[menus.arguments]]
+name = "ignore-missing"
+type = "bool"
+description = "Install only the RouterOS main package, omitting packages that are missing or not uploaded."
+unset = true
+
+[[menus]]
+path = "/system/ptp"
+type = "Directory"
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "priority1"
+type = "enum (auto)"
+[[menus.arguments]]
+name = "priority2"
+type = "enum (auto)"
+[[menus.arguments]]
+name = "delay-mode"
+type = "enum (auto | e2e | p2p)"
+[[menus.arguments]]
+name = "transport"
+type = "enum (auto | ipv4 | l2-non-forwardable | l2-forwardable)"
+[[menus.arguments]]
+name = "profile"
+type = "enum (default | 802.1as | g8275.1 | aes67 | smpte)"
+[[menus.arguments]]
+name = "domain"
+type = "enum (auto)"
+
+[[menus]]
+path = "/system/ptp/monitor"
+type = "Command"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "clock-id"
+type = "string"
+[[menus.read_only]]
+name = "priority1"
+type = "num"
+[[menus.read_only]]
+name = "priority2"
+type = "num"
+[[menus.read_only]]
+name = "i-am-gm"
+type = "bool"
+[[menus.read_only]]
+name = "gm-clock-id"
+type = "string"
+[[menus.read_only]]
+name = "gm-priority1"
+type = "num"
+[[menus.read_only]]
+name = "gm-priority2"
+type = "num"
+[[menus.read_only]]
+name = "master-clock-id"
+type = "string"
+[[menus.read_only]]
+name = "slave-port"
+type = "iface_enum"
+[[menus.read_only]]
+name = "freq-drift"
+type = "num"
+[[menus.read_only]]
+name = "offset"
+type = "num"
+[[menus.read_only]]
+name = "slave-port-delay"
+type = "num"
+
+[[menus]]
+path = "/system/ptp/port"
+type = "Directory"
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.arguments]]
+name = "ptp"
+type = "enum"
+required = true
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum { }"
+required = true
+
+[[menus]]
+path = "/system/ptp/status"
+type = "Directory"
+[[menus.read_only]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "state"
+type = "string"
+[[menus.read_only]]
+name = "delay"
+type = "num"
+[[menus.read_only]]
+name = "port-nr"
+type = "num"
+[[menus.read_only]]
+name = "as-capable"
+type = "bool"
+[[menus.read_only]]
+name = "neigh-freq-drift"
+type = "num"
+
+[[menus]]
+path = "/system/reboot"
+type = "Command"
+
+[[menus]]
+path = "/system/regulatory"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "fcc"
+type = "string"
+
+[[menus]]
+path = "/system/reset-configuration"
+type = "Command"
+[[menus.arguments]]
+name = "keep-users"
+type = "bool"
+[[menus.arguments]]
+name = "keep-apps"
+type = "bool"
+[[menus.arguments]]
+name = "no-defaults"
+type = "bool"
+[[menus.arguments]]
+name = "caps-mode"
+type = "bool"
+[[menus.arguments]]
+name = "wps-sync-mode"
+type = "bool"
+[[menus.arguments]]
+name = "skip-backup"
+type = "bool"
+[[menus.arguments]]
+name = "force-v6-to-v7-configuration-upgrade"
+type = "bool"
+[[menus.arguments]]
+name = "shutdown"
+type = "bool"
+[[menus.arguments]]
+name = "run-after-reset"
+type = "file { }"
+description = ".rsc file"
+
+[[menus]]
+path = "/system/resource"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "uptime"
+type = "time"
+[[menus.read_only]]
+name = "version"
+type = "string"
+[[menus.read_only]]
+name = "build-time"
+type = "string"
+[[menus.read_only]]
+name = "factory-software"
+type = "string"
+[[menus.read_only]]
+name = "free-memory"
+type = "num"
+[[menus.read_only]]
+name = "total-memory"
+type = "num"
+[[menus.read_only]]
+name = "cpu"
+type = "string"
+[[menus.read_only]]
+name = "cpu-count"
+type = "num"
+[[menus.read_only]]
+name = "cpu-frequency"
+type = "num"
+[[menus.read_only]]
+name = "cpu-load"
+type = "num"
+[[menus.read_only]]
+name = "free-hdd-space"
+type = "num"
+[[menus.read_only]]
+name = "total-hdd-space"
+type = "num"
+[[menus.read_only]]
+name = "write-sect-since-reboot"
+type = "num"
+[[menus.read_only]]
+name = "write-sect-total"
+type = "num"
+[[menus.read_only]]
+name = "bad-blocks"
+type = "num"
+[[menus.read_only]]
+name = "architecture-name"
+type = "string"
+[[menus.read_only]]
+name = "board-name"
+type = "string"
+[[menus.read_only]]
+name = "platform"
+type = "string"
+
+[[menus]]
+path = "/system/resource/cpu"
+type = "Directory"
+[[menus.read_only]]
+name = "cpu"
+type = "string"
+[[menus.read_only]]
+name = "load"
+type = "num"
+[[menus.read_only]]
+name = "irq"
+type = "num"
+[[menus.read_only]]
+name = "disk"
+type = "num"
+
+[[menus]]
+path = "/system/resource/hardware"
+type = "Directory"
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.read_only]]
+name = "location"
+type = "string"
+[[menus.read_only]]
+name = "parent"
+type = "enum"
+[[menus.read_only]]
+name = "type"
+type = "enum (usb | pci | scsi | serial)"
+[[menus.read_only]]
+name = "vendor"
+type = "string"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "category"
+type = "string"
+[[menus.read_only]]
+name = "serial-number"
+type = "string"
+[[menus.read_only]]
+name = "vendor-id"
+type = "string"
+[[menus.read_only]]
+name = "device-id"
+type = "string"
+[[menus.read_only]]
+name = "speed"
+type = "string"
+[[menus.read_only]]
+name = "ports"
+type = "num"
+[[menus.read_only]]
+name = "usb-version"
+type = "string"
+[[menus.read_only]]
+name = "manufacturer-reported-max-power"
+type = "string"
+[[menus.read_only]]
+name = "irq"
+type = "num"
+[[menus.read_only]]
+name = "memory"
+type = ""
+[[menus.read_only]]
+name = "io"
+type = ""
+[[menus.read_only]]
+name = "owner"
+type = "string"
+[[menus.read_only]]
+name = "device-path"
+type = ""
+
+[[menus]]
+path = "/system/resource/hardware/authorize"
+type = "Command"
+[[menus.arguments]]
+name = "allow"
+type = "bool"
+
+[[menus]]
+path = "/system/resource/hardware/usb-power-reset"
+type = "Command"
+[[menus.arguments]]
+name = "duration"
+type = "time"
+[[menus.arguments]]
+name = "bus"
+type = "num"
+[[menus.arguments]]
+name = "slot"
+type = "num"
+
+[[menus]]
+path = "/system/resource/hardware/usb-settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "authorization"
+type = "bool"
+
+[[menus]]
+path = "/system/resource/irq"
+type = "Directory"
+[[menus.flags]]
+name = "o"
+description = ""
+[[menus.arguments]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "irq"
+type = "num"
+[[menus.read_only]]
+name = "users"
+type = ""
+[[menus.read_only]]
+name = "active-cpu"
+type = "num"
+[[menus.read_only]]
+name = "count"
+type = "num"
+[[menus.read_only]]
+name = "per-cpu-count"
+type = ""
+
+[[menus]]
+path = "/system/resource/irq/rps"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.read_only]]
+name = "name"
+type = "iface_enum"
+
+[[menus]]
+path = "/system/resource/monitor"
+type = "Command"
+[[menus.read_only]]
+name = "cpu-used"
+type = "num"
+[[menus.read_only]]
+name = "cpu-used-per-core"
+type = ""
+[[menus.read_only]]
+name = "free-memory"
+type = "num"
+
+[[menus]]
+path = "/system/routerboard"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "routerboard"
+type = "bool"
+[[menus.read_only]]
+name = "board-name"
+type = "string"
+[[menus.read_only]]
+name = "model"
+type = "string"
+[[menus.read_only]]
+name = "revision"
+type = "string"
+[[menus.read_only]]
+name = "serial-number"
+type = "string"
+[[menus.read_only]]
+name = "firmware-type"
+type = "string"
+[[menus.read_only]]
+name = "factory-firmware"
+type = "string"
+[[menus.read_only]]
+name = "current-firmware"
+type = "string"
+[[menus.read_only]]
+name = "upgrade-firmware"
+type = "string"
+
+[[menus]]
+path = "/system/routerboard/mode-button"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "hold-time"
+type = "composite { , }"
+[[menus.arguments]]
+name = "on-event"
+type = ""
+
+[[menus]]
+path = "/system/routerboard/reset-button"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "hold-time"
+type = "composite { , }"
+[[menus.arguments]]
+name = "on-event"
+type = ""
+
+[[menus]]
+path = "/system/routerboard/settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "auto-upgrade"
+type = "bool"
+[[menus.arguments]]
+name = "baud-rate"
+type = "enum (115200 | 57600 | 38400 | 19200 | 9600 | 4800 | 2400 | 1200)"
+[[menus.arguments]]
+name = "boot-delay"
+type = "time"
+[[menus.arguments]]
+name = "init-delay"
+type = "time"
+[[menus.arguments]]
+name = "enter-setup-on"
+type = "enum (any-key | delete-key)"
+[[menus.arguments]]
+name = "boot-device"
+type = "enum"
+[[menus.arguments]]
+name = "preboot-etherboot"
+type = ""
+[[menus.arguments]]
+name = "preboot-etherboot-server"
+type = ""
+[[menus.arguments]]
+name = "etherboot-port"
+type = "enum (ether1 | ether2)"
+[[menus.arguments]]
+name = "boot-os"
+type = "enum (router-os | swos)"
+[[menus.arguments]]
+name = "regulatory-domain-ce"
+type = "bool"
+[[menus.arguments]]
+name = "cpu-mode"
+type = "enum (power-save | regular)"
+[[menus.arguments]]
+name = "cpu-frequency"
+type = "enum"
+[[menus.arguments]]
+name = "memory-frequency"
+type = "enum"
+[[menus.arguments]]
+name = "memory-data-rate"
+type = "enum"
+[[menus.arguments]]
+name = "preferred-architecture"
+type = "enum (arm32 | arm64)"
+[[menus.arguments]]
+name = "boot-protocol"
+type = "enum (bootp | dhcp)"
+[[menus.arguments]]
+name = "enable-jumper-reset"
+type = "bool"
+[[menus.arguments]]
+name = "force-backup-booter"
+type = "bool"
+[[menus.arguments]]
+name = "silent-boot"
+type = "bool"
+[[menus.arguments]]
+name = "disable-pci"
+type = "bool"
+[[menus.arguments]]
+name = "gpio-function"
+type = "ubit (serial1)"
+[[menus.arguments]]
+name = "protected-routerboot"
+type = "bool"
+[[menus.arguments]]
+name = "reformat-hold-button"
+type = "time"
+[[menus.arguments]]
+name = "reformat-hold-button-max"
+type = "time"
+[[menus.read_only]]
+name = "safe-cpu-frequency"
+type = "enum"
+
+[[menus]]
+path = "/system/routerboard/settings/keep-frequency"
+type = "Command"
+
+[[menus]]
+path = "/system/routerboard/upgrade"
+type = "Command"
+
+[[menus]]
+path = "/system/routerboard/usb"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "type"
+type = "enum (USB-type-A | mini-PCIe | auto)"
+[[menus.arguments]]
+name = "usb-mode"
+type = "enum (automatic | force-host)"
+[[menus.read_only]]
+name = "auto-type"
+type = "enum (USB-type-A | mini-PCIe)"
+[[menus.read_only]]
+name = "bootstrap"
+type = "enum (host-mode | device-mode)"
+
+[[menus]]
+path = "/system/routerboard/usb/power-reset"
+type = "Command"
+[[menus.arguments]]
+name = "duration"
+type = "time"
+[[menus.arguments]]
+name = "bus"
+type = "num"
+
+[[menus]]
+path = "/system/routerboard/wps-button"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "hold-time"
+type = "composite { , }"
+[[menus.arguments]]
+name = "on-event"
+type = ""
+
+[[menus]]
+path = "/system/rtrace"
+type = "Settings Directory"
+[[menus.read_only]]
+name = "state"
+type = "enum (stopped | running | stopping)"
+
+[[menus]]
+path = "/system/rtrace/start"
+type = "Command"
+
+[[menus]]
+path = "/system/rtrace/stop"
+type = "Command"
+
+[[menus]]
+path = "/system/scheduler"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.arguments]]
+name = "name"
+type = "string"
+required = true
+[[menus.arguments]]
+name = "start-date"
+type = "date"
+[[menus.arguments]]
+name = "start-time"
+type = ""
+[[menus.arguments]]
+name = "interval"
+type = "time"
+[[menus.arguments]]
+name = "on-event"
+type = ""
+[[menus.arguments]]
+name = "policy"
+type = ""
+[[menus.read_only]]
+name = "owner"
+type = "string"
+[[menus.read_only]]
+name = "run-count"
+type = "num"
+[[menus.read_only]]
+name = "next-run"
+type = "date"
+
+[[menus]]
+path = "/system/script"
+type = "Directory"
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "owner"
+type = "string"
+[[menus.arguments]]
+name = "policy"
+type = ""
+[[menus.arguments]]
+name = "dont-require-permissions"
+type = "bool"
+[[menus.arguments]]
+name = "source"
+type = "string"
+[[menus.read_only]]
+name = "last-started"
+type = "date"
+[[menus.read_only]]
+name = "run-count"
+type = "num"
+
+[[menus]]
+path = "/system/script/environment"
+type = "Directory"
+[[menus.arguments]]
+name = "value"
+type = "string"
+[[menus.read_only]]
+name = "name"
+type = "string"
+
+[[menus]]
+path = "/system/script/job"
+type = "Directory"
+[[menus.arguments]]
+name = "started"
+type = "date"
+[[menus.arguments]]
+name = "type"
+type = "enum (command | login | api-login)"
+[[menus.read_only]]
+name = "script"
+type = "enum"
+[[menus.read_only]]
+name = "owner"
+type = "string"
+[[menus.read_only]]
+name = "policy"
+type = ""
+[[menus.read_only]]
+name = "parent"
+type = "num"
+[[menus.read_only]]
+name = "trace"
+type = "string"
+
+[[menus]]
+path = "/system/serial-interface/read"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+description = "name of the port from port list"
+[[menus.arguments]]
+name = "time"
+type = "time"
+description = "timeout for serial terminal access (capture mode)"
+[[menus.arguments]]
+name = "size"
+type = "num"
+description = "maximum bytes read from the serial terminal (capture mode)"
+[[menus.arguments]]
+name = "until"
+type = "string"
+description = "read from the serial terminal until provided character sequence (capture mode)"
+[[menus.arguments]]
+name = "as-string"
+type = "switch"
+description = "do not interpret output as a console value (in capture mode)"
+
+[[menus]]
+path = "/system/serial-interface/serial-terminal"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+description = "name of the port from port list"
+[[menus.arguments]]
+name = "channel"
+type = "num"
+description = "port channel that will be used (0 by default)"
+[[menus.arguments]]
+name = "write"
+type = "string"
+description = "non-interactively write provided value to the serial terminal"
+
+[[menus]]
+path = "/system/serial-interface/start"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+description = "name of the port from port list"
+[[menus.arguments]]
+name = "channel"
+type = "num"
+description = "port channel that will be used (0 by default)"
+
+[[menus]]
+path = "/system/serial-interface/stop"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+description = "name of the port from port list"
+[[menus.arguments]]
+name = "channel"
+type = "num"
+description = "port channel that will be used (0 by default)"
+
+[[menus]]
+path = "/system/serial-interface/write"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+description = "name of the port from port list"
+[[menus.arguments]]
+name = "data"
+type = "string"
+description = "non-interactively write provided value to the serial terminal"
+
+[[menus]]
+path = "/system/shutdown"
+type = "Command"
+
+[[menus]]
+path = "/system/ssh"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "command"
+type = "string"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.arguments]]
+name = "output-to-file"
+type = "string"
+description = "this output method does not accept password input, use key authentication"
+
+[[menus]]
+path = "/system/ssh-exec"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "command"
+type = "string"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.arguments]]
+name = "output-to-file"
+type = "string"
+description = "write output to file instead of 'output' variable"
+[[menus.read_only]]
+name = "exit-code"
+type = "num"
+[[menus.read_only]]
+name = "output"
+type = "string"
+
+[[menus]]
+path = "/system/sup-output"
+type = "Command"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "output-width"
+type = "num"
+unset = true
+[[menus.read_only]]
+name = "created"
+type = "num"
+
+[[menus]]
+path = "/system/swos"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "address-acquisition-mode"
+type = "enum (dhcp-with-fallback | static | dhcp-only)"
+[[menus.arguments]]
+name = "static-ip-address"
+type = "ipAddr"
+[[menus.arguments]]
+name = "identity"
+type = "string"
+[[menus.arguments]]
+name = "allow-from"
+type = "composite { , }"
+[[menus.arguments]]
+name = "allow-from-ports"
+type = "ubit (p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, ..."
+[[menus.arguments]]
+name = "allow-from-vlan"
+type = "num"
+
+[[menus]]
+path = "/system/swos/load-config"
+type = "Command"
+[[menus.arguments]]
+name = "file"
+type = "file { }"
+
+[[menus]]
+path = "/system/swos/password"
+type = "Command"
+[[menus.arguments]]
+name = "new-password"
+type = "string"
+[[menus.arguments]]
+name = "confirm-new-password"
+type = "string"
+
+[[menus]]
+path = "/system/swos/reset-config"
+type = "Command"
+
+[[menus]]
+path = "/system/swos/save-config"
+type = "Command"
+[[menus.arguments]]
+name = "file"
+type = "string"
+
+[[menus]]
+path = "/system/swos/upgrade"
+type = "Command"
+[[menus.read_only]]
+name = "version"
+type = "string"
+[[menus.read_only]]
+name = "status"
+type = "string"
+
+[[menus]]
+path = "/system/telnet"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+
+[[menus]]
+path = "/system/ups"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "I"
+description = ""
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "port"
+type = "enum ()"
+[[menus.arguments]]
+name = "offline-time"
+type = "time"
+[[menus.arguments]]
+name = "min-runtime"
+type = ""
+[[menus.arguments]]
+name = "alarm-setting"
+type = "enum (immediate | delayed | low-battery | none)"
+[[menus.arguments]]
+name = "check-capabilities"
+type = "bool"
+[[menus.read_only]]
+name = "model"
+type = "string"
+[[menus.read_only]]
+name = "version"
+type = "string"
+[[menus.read_only]]
+name = "serial"
+type = "string"
+[[menus.read_only]]
+name = "manufacture-date"
+type = "string"
+[[menus.read_only]]
+name = "load"
+type = "num"
+[[menus.read_only]]
+name = "on-line"
+type = "bool"
+[[menus.read_only]]
+name = "nominal-battery-voltage"
+type = "num"
+[[menus.read_only]]
+name = "offline-after"
+type = "time"
+
+[[menus]]
+path = "/system/ups/beep"
+type = "Command"
+
+[[menus]]
+path = "/system/ups/monitor"
+type = "Command"
+[[menus.read_only]]
+name = "on-line"
+type = "bool"
+[[menus.read_only]]
+name = "on-battery"
+type = "bool"
+[[menus.read_only]]
+name = "transfer-cause"
+type = "string"
+[[menus.read_only]]
+name = "rtc-running"
+type = "bool"
+[[menus.read_only]]
+name = "runtime-left"
+type = "time"
+[[menus.read_only]]
+name = "offline-after"
+type = "time"
+[[menus.read_only]]
+name = "battery-charge"
+type = "num"
+[[menus.read_only]]
+name = "battery-voltage"
+type = "num"
+[[menus.read_only]]
+name = "line-voltage"
+type = "num"
+[[menus.read_only]]
+name = "output-voltage"
+type = "num"
+[[menus.read_only]]
+name = "load"
+type = "num"
+[[menus.read_only]]
+name = "temperature"
+type = "num"
+[[menus.read_only]]
+name = "frequency"
+type = "num"
+[[menus.read_only]]
+name = "replace-battery"
+type = "bool"
+[[menus.read_only]]
+name = "smart-boost"
+type = "bool"
+[[menus.read_only]]
+name = "smart-trim"
+type = "bool"
+[[menus.read_only]]
+name = "overload"
+type = "bool"
+[[menus.read_only]]
+name = "low-battery"
+type = "bool"
+[[menus.read_only]]
+name = "self-test"
+type = "string"
+[[menus.read_only]]
+name = "hid-self-test"
+type = "enum (done-and-passed | done-and-warning | done-and-error | aborted | in-progress | no-test-initi..."
+
+[[menus]]
+path = "/system/ups/rtc"
+type = "Command"
+
+[[menus]]
+path = "/system/ups/self-test"
+type = "Command"
+[[menus.arguments]]
+name = "hid-test-type"
+type = "enum (quick | deep | abort)"
+
+[[menus]]
+path = "/system/watchdog"
+type = "Directory"
+[[menus.flags]]
+name = "T"
+description = "terminated"
+[[menus.flags]]
+name = "C"
+description = "current"
+[[menus.flags]]
+name = "A"
+description = "autosave"
+[[menus.arguments]]
+name = "watch-address"
+type = ""
+[[menus.arguments]]
+name = "watchdog-timer"
+type = "bool"
+[[menus.arguments]]
+name = "ping-start-after-boot"
+type = "time"
+[[menus.arguments]]
+name = "ping-timeout"
+type = "time"
+[[menus.arguments]]
+name = "automatic-supout"
+type = "bool"
+[[menus.arguments]]
+name = "auto-send-supout"
+type = "bool"
+[[menus.arguments]]
+name = "send-email-to"
+type = "string"
+[[menus.arguments]]
+name = "send-email-from"
+type = "string"
+[[menus.arguments]]
+name = "send-smtp-server"
+type = ""
+[[menus.read_only]]
+name = "term-pid"
+type = "num"
+[[menus.read_only]]
+name = "task-id"
+type = "num"
+[[menus.read_only]]
+name = "user"
+type = "string"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "source"
+type = "string"
+[[menus.read_only]]
+name = "file-name"
+type = "string"
+[[menus.read_only]]
+name = "save-interval"
+type = "time"
+[[menus.read_only]]
+name = "append"
+type = "switch"
+
+[[menus]]
+path = "/tool/apptraffic/stats"
+type = "Directory"
+[[menus.read_only]]
+name = "application"
+type = "string"
+[[menus.read_only]]
+name = "category"
+type = "string"
+[[menus.read_only]]
+name = "bytes-out"
+type = "num"
+[[menus.read_only]]
+name = "bytes-in"
+type = "num"
+[[menus.read_only]]
+name = "packets-out"
+type = "num"
+[[menus.read_only]]
+name = "packets-in"
+type = "num"
+[[menus.read_only]]
+name = "percent-out"
+type = "num"
+[[menus.read_only]]
+name = "percent-in"
+type = "num"
+
+[[menus]]
+path = "/tool/apptraffic/stats/categories"
+type = "Directory"
+[[menus.read_only]]
+name = "category"
+type = "string"
+[[menus.read_only]]
+name = "bytes-out"
+type = "num"
+[[menus.read_only]]
+name = "bytes-in"
+type = "num"
+[[menus.read_only]]
+name = "packets-out"
+type = "num"
+[[menus.read_only]]
+name = "packets-in"
+type = "num"
+[[menus.read_only]]
+name = "percent-out"
+type = "num"
+[[menus.read_only]]
+name = "percent-in"
+type = "num"
+
+[[menus]]
+path = "/tool/apptraffic/stats/clear"
+type = "Command"
+
+[[menus]]
+path = "/tool/bandwidth-server"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "authenticate"
+type = "bool"
+[[menus.arguments]]
+name = "allocate-udp-ports-from"
+type = "num"
+description = "Beginning of UDP port range"
+[[menus.arguments]]
+name = "max-sessions"
+type = "num"
+description = "Maximal simultaneous test count"
+[[menus.arguments]]
+name = "allowed-addresses4"
+type = ""
+[[menus.arguments]]
+name = "allowed-addresses6"
+type = ""
+
+[[menus]]
+path = "/tool/bandwidth-server/session"
+type = "Directory"
+[[menus.read_only]]
+name = "client"
+type = ""
+[[menus.read_only]]
+name = "protocol"
+type = "enum (udp | tcp)"
+[[menus.read_only]]
+name = "direction"
+type = "enum (receive | send | both)"
+[[menus.read_only]]
+name = "user"
+type = "string"
+[[menus.read_only]]
+name = "random-data"
+type = "bool"
+[[menus.read_only]]
+name = "tx-current"
+type = "num"
+[[menus.read_only]]
+name = "tx-10-second-average"
+type = "num"
+[[menus.read_only]]
+name = "tx-total-average"
+type = "num"
+[[menus.read_only]]
+name = "rx-current"
+type = "num"
+[[menus.read_only]]
+name = "rx-10-second-average"
+type = "num"
+[[menus.read_only]]
+name = "rx-total-average"
+type = "num"
+[[menus.read_only]]
+name = "lost-packets"
+type = "num"
+[[menus.read_only]]
+name = "tx-size"
+type = "range"
+[[menus.read_only]]
+name = "rx-size"
+type = "range"
+[[menus.read_only]]
+name = "tcp-connection-count"
+type = "num"
+[[menus.read_only]]
+name = "local-tx-speed"
+type = "num"
+[[menus.read_only]]
+name = "remote-tx-speed"
+type = "num"
+
+[[menus]]
+path = "/tool/bandwidth-test"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46viD)"
+[[menus.arguments]]
+name = "protocol"
+type = "enum (udp | tcp)"
+[[menus.arguments]]
+name = "local-udp-tx-size"
+type = "range"
+[[menus.arguments]]
+name = "remote-udp-tx-size"
+type = "range"
+[[menus.arguments]]
+name = "direction"
+type = "enum (receive | transmit | both)"
+[[menus.arguments]]
+name = "connection-count"
+type = "num"
+[[menus.arguments]]
+name = "local-tx-speed"
+type = "num"
+[[menus.arguments]]
+name = "remote-tx-speed"
+type = "num"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "duration"
+type = "time"
+[[menus.arguments]]
+name = "random-data"
+type = "bool"
+[[menus.read_only]]
+name = "status"
+type = "enum (connecting | can not start test | can not connect | remote is busy | test unsupported | run..."
+[[menus.read_only]]
+name = "duration"
+type = "time"
+[[menus.read_only]]
+name = "tx-current"
+type = "num"
+[[menus.read_only]]
+name = "tx-10-second-average"
+type = "num"
+[[menus.read_only]]
+name = "tx-total-average"
+type = "num"
+[[menus.read_only]]
+name = "rx-current"
+type = "num"
+[[menus.read_only]]
+name = "rx-10-second-average"
+type = "num"
+[[menus.read_only]]
+name = "rx-total-average"
+type = "num"
+[[menus.read_only]]
+name = "lost-packets"
+type = "num"
+[[menus.read_only]]
+name = "random-data"
+type = "bool"
+[[menus.read_only]]
+name = "direction"
+type = "enum (receive | transmit | both)"
+[[menus.read_only]]
+name = "tx-size"
+type = "range"
+[[menus.read_only]]
+name = "rx-size"
+type = "range"
+[[menus.read_only]]
+name = "connection-count"
+type = "num"
+[[menus.read_only]]
+name = "local-cpu-load"
+type = "num"
+[[menus.read_only]]
+name = "remote-cpu-load"
+type = "num"
+[[menus.read_only]]
+name = "tcp-info"
+type = ""
+
+[[menus]]
+path = "/tool/calea"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.arguments]]
+name = "case-id"
+type = "num"
+[[menus.arguments]]
+name = "case-name"
+type = "string"
+[[menus.arguments]]
+name = "intercept-ip"
+type = "ipAddr"
+[[menus.arguments]]
+name = "intercept-port"
+type = "num"
+[[menus.arguments]]
+name = "action"
+type = "enum (pcap | limited)"
+[[menus.arguments]]
+name = "file-root"
+type = "string"
+[[menus.arguments]]
+name = "pcap-file-stop-interval"
+type = "time { }"
+[[menus.arguments]]
+name = "pcap-file-stop-size"
+type = "num { }"
+[[menus.arguments]]
+name = "pcap-file-stop-count"
+type = "num { }"
+[[menus.arguments]]
+name = "pcap-file-hash-method"
+type = "enum (none | md5 | sha1 | sha256)"
+[[menus.arguments]]
+name = "limited-file-stop-interval"
+type = "time { }"
+[[menus.arguments]]
+name = "limited-file-hash-method"
+type = "enum (none | md5 | sha1 | sha256)"
+[[menus.read_only]]
+name = "access-session-id"
+type = "num"
+[[menus.read_only]]
+name = "packets"
+type = "num"
+[[menus.read_only]]
+name = "bytes"
+type = "num"
+
+[[menus]]
+path = "/tool/ddns/dns-update"
+type = "Command"
+[[menus.arguments]]
+name = "dns-server"
+type = "ipAddr"
+[[menus.arguments]]
+name = "zone"
+type = "string"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "key-name"
+type = "string"
+[[menus.arguments]]
+name = "key"
+type = "string"
+[[menus.arguments]]
+name = "ttl"
+type = "num"
+
+[[menus]]
+path = "/tool/e-mail"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "server"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "tls"
+type = "enum (no | yes | starttls)"
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.arguments]]
+name = "from"
+type = "string"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "certificate-verification"
+type = "enum (no | yes | yes-without-crl)"
+description = "TLS certificate validation"
+[[menus.read_only]]
+name = "last-status"
+type = "enum (none | resolving-dns | in-progress | failed | succeeded)"
+[[menus.read_only]]
+name = "last-address"
+type = ""
+
+[[menus]]
+path = "/tool/e-mail/send"
+type = "Command"
+[[menus.arguments]]
+name = "server"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "to"
+type = ""
+[[menus.arguments]]
+name = "cc"
+type = ""
+[[menus.arguments]]
+name = "from"
+type = "string"
+[[menus.arguments]]
+name = "subject"
+type = "string"
+[[menus.arguments]]
+name = "body"
+type = "string"
+[[menus.arguments]]
+name = "file"
+type = ""
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "tls"
+type = "enum (no | yes | starttls)"
+[[menus.arguments]]
+name = "certificate-verification"
+type = "enum (no | yes | yes-without-crl)"
+description = "TLS certificate validation"
+
+[[menus]]
+path = "/tool/fetch"
+type = "Command"
+[[menus.arguments]]
+name = "url"
+type = "string"
+[[menus.arguments]]
+name = "output"
+type = "enum (none | file | user | user-with-headers)"
+description = "where to output data, works for all protocols"
+[[menus.arguments]]
+name = "http-method"
+type = "enum (get | post | put | delete | head | patch)"
+[[menus.arguments]]
+name = "http-auth-scheme"
+type = "enum (basic | digest)"
+[[menus.arguments]]
+name = "http-data"
+type = "string"
+description = "POST or PUT request body data"
+[[menus.arguments]]
+name = "http-header-field"
+type = ""
+[[menus.arguments]]
+name = "check-certificate"
+type = "enum (no | yes | yes-without-crl)"
+description = "https certificate validation"
+[[menus.arguments]]
+name = "certificate"
+type = "enum"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "mode"
+type = "enum (http | https | ftp | tftp | sftp)"
+[[menus.arguments]]
+name = "http-content-encoding"
+type = "enum (deflate | gzip)"
+description = "encode payload and add corresponding Content-Encoding header; for HTTP POST and PUT only"
+[[menus.arguments]]
+name = "ip-type"
+type = "enum (any | ipv4 | ipv6)"
+[[menus.arguments]]
+name = "src-path"
+type = "file"
+[[menus.arguments]]
+name = "dst-path"
+type = "file"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "host"
+type = "string"
+[[menus.arguments]]
+name = "ascii"
+type = "bool"
+description = "ftp transfer type"
+[[menus.arguments]]
+name = "upload"
+type = "bool"
+description = "ftp and tftp transfer direction"
+[[menus.arguments]]
+name = "keep-result"
+type = "bool"
+description = "depracated, use 'output' argument"
+[[menus.arguments]]
+name = "idle-timeout"
+type = ""
+[[menus.arguments]]
+name = "http-max-redirect-count"
+type = "num"
+description = "default 0, i.e. no redirects"
+[[menus.arguments]]
+name = "http-percent-encoding"
+type = "bool"
+description = "percent-encodes every character in path except for alphanumeric and the following characters: -._~/?^=:"
+[[menus.arguments]]
+name = "http-version"
+type = "enum (http1_1 | http2)"
+[[menus.read_only]]
+name = "status"
+type = "enum (none | connecting | requesting | downloading | uploading | finished | failed)"
+[[menus.read_only]]
+name = "code"
+type = "num"
+[[menus.read_only]]
+name = "downloaded"
+type = "num"
+[[menus.read_only]]
+name = "uploaded"
+type = "num"
+[[menus.read_only]]
+name = "total"
+type = "num"
+[[menus.read_only]]
+name = "duration"
+type = "time"
+[[menus.read_only]]
+name = "data"
+type = "string"
+[[menus.read_only]]
+name = "http-headers"
+type = ""
+
+[[menus]]
+path = "/tool/flood-ping"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = ""
+[[menus.arguments]]
+name = "count"
+type = "num"
+[[menus.arguments]]
+name = "size"
+type = "num"
+[[menus.arguments]]
+name = "timeout"
+type = "time"
+[[menus.read_only]]
+name = "sent"
+type = "num"
+[[menus.read_only]]
+name = "received"
+type = "num"
+[[menus.read_only]]
+name = "min-rtt"
+type = "time"
+[[menus.read_only]]
+name = "avg-rtt"
+type = "time"
+[[menus.read_only]]
+name = "max-rtt"
+type = "time"
+
+[[menus]]
+path = "/tool/graphing"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "store-every"
+type = "enum (5min | hour | 24hours)"
+[[menus.arguments]]
+name = "page-refresh"
+type = "enum (never)"
+description = "How often to refresh HTML pages (in seconds)"
+
+[[menus]]
+path = "/tool/graphing/ifaces/interface"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum { all:0 }"
+[[menus.arguments]]
+name = "allow-address"
+type = ""
+[[menus.arguments]]
+name = "store-on-disk"
+type = "bool"
+
+[[menus]]
+path = "/tool/graphing/queues/queue"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.arguments]]
+name = "simple-queue"
+type = "enum (all)"
+[[menus.arguments]]
+name = "allow-address"
+type = ""
+[[menus.arguments]]
+name = "store-on-disk"
+type = "bool"
+[[menus.arguments]]
+name = "allow-target"
+type = "bool"
+
+[[menus]]
+path = "/tool/graphing/resource"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.arguments]]
+name = "allow-address"
+type = ""
+[[menus.arguments]]
+name = "store-on-disk"
+type = "bool"
+
+[[menus]]
+path = "/tool/ip-scan"
+type = "Command"
+[[menus.flags]]
+name = "D"
+description = "dhcp"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "address-range"
+type = "ipRange"
+[[menus.read_only]]
+name = "address"
+type = "ipAddr"
+[[menus.read_only]]
+name = "mac-address"
+type = "macAddr"
+[[menus.read_only]]
+name = "time"
+type = "num"
+[[menus.read_only]]
+name = "dns"
+type = "string"
+[[menus.read_only]]
+name = "snmp"
+type = "string"
+[[menus.read_only]]
+name = "netbios"
+type = "string"
+
+[[menus]]
+path = "/tool/mac-scan"
+type = "Command"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "mac-address"
+type = "macAddr"
+[[menus.read_only]]
+name = "address"
+type = "ipAddr"
+[[menus.read_only]]
+name = "age"
+type = "num"
+
+[[menus]]
+path = "/tool/mac-server"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "allowed-interface-list"
+type = "enum"
+
+[[menus]]
+path = "/tool/mac-server/mac-winbox"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "allowed-interface-list"
+type = "enum"
+
+[[menus]]
+path = "/tool/mac-server/ping"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+
+[[menus]]
+path = "/tool/mac-server/sessions"
+type = "Directory"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "src-address"
+type = "macAddr"
+[[menus.arguments]]
+name = "uptime"
+type = "time"
+
+[[menus]]
+path = "/tool/mac-telnet"
+type = "Command"
+[[menus.arguments]]
+name = "host"
+type = "enum ()"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+unset = true
+
+[[menus]]
+path = "/tool/netwatch"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.arguments]]
+name = "name"
+type = "string"
+description = "The name of the Netwatch probe."
+[[menus.arguments]]
+name = "host"
+type = "address (flags=46viD)"
+description = "The IP address or domain name of the server to be probed. See [address flags](../../cli-reference/#address-flags)"
+required = true
+[[menus.arguments]]
+name = "type"
+type = "enum (simple | icmp | tcp-conn | http-get | https-get | dns)"
+[[menus.arguments]]
+name = "src-address"
+type = "address (flags=46)"
+description = "Source IP address which the Netwatch will try to use in order to reach the host. If the address is not configured on the router or was lost, then the host will be considered as \"down\". See [address flags](../../cli-reference/#address-flags)"
+unset = true
+[[menus.arguments]]
+name = "interval"
+type = "time"
+description = "The time interval between probe tests. (default value: **10s**)"
+unset = true
+[[menus.arguments]]
+name = "timeout"
+type = "time"
+description = "Max time limit to wait for a response. (default value: **3s**)"
+unset = true
+[[menus.arguments]]
+name = "start-delay"
+type = "time"
+description = "Time to wait before starting the probe. (default value: **3s**) (on add, enable, or system startup in cases when \"startup-delay\" value is smaller then \"start-delay\" value)"
+unset = true
+[[menus.arguments]]
+name = "startup-delay"
+type = "time"
+description = "Time to wait until starting the Netwatch probe after system startup. (default value: **5m**)"
+unset = true
+[[menus.arguments]]
+name = "ignore-initial-up"
+type = "bool"
+description = "Specifies if \"Up\" script should be run if the probe state change goes from Unknown to \"Up\", used to help against false positives after enabling the probe, or after a reboot. \"no\" means that the change from \"Unknown\" to \"Up\" will not be ignored. (default value: **no**)"
+unset = true
+[[menus.arguments]]
+name = "ignore-initial-down"
+type = "bool"
+description = "Specifies if \"Down\" script should be run if the probe state change goes from Unknown to \"Down\". \"no\" means that the change from \"Unknown\" to \"Down\" will not be ignored. (default value: **no**)  **Warning**: Should be used with care, as the first \"Down\" status won't be executed, and Down script will only be run if the probe goes from \"Up\" to \"Down\" state."
+unset = true
+[[menus.arguments]]
+name = "up-script"
+type = ""
+[[menus.arguments]]
+name = "down-script"
+type = ""
+[[menus.arguments]]
+name = "test-script"
+type = ""
+[[menus.arguments]]
+name = "packet-interval"
+type = "time"
+description = "The time between ICMP-request packet sends. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **50ms**)"
+unset = true
+[[menus.arguments]]
+name = "packet-count"
+type = "num"
+description = "Total count of ICMP packets to send out within a single test. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **10**)"
+unset = true
+[[menus.arguments]]
+name = "packet-size"
+type = "num"
+description = "Total size of the IP ICMP packet. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **50**)"
+unset = true
+[[menus.arguments]]
+name = "ttl"
+type = "num"
+description = "Manually sets the time to live value for the ICMP packet. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **255**)"
+unset = true
+[[menus.arguments]]
+name = "accept-icmp-time-exceeded"
+type = "bool"
+description = "If the ICMP \"time exceeded\" message should be considered a valid response. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **no**)"
+unset = true
+[[menus.arguments]]
+name = "early-success-detection"
+type = "bool"
+description = "Netwatch will not wait for all the packets to be processed to change probe status if it is already known that the host will be considered \"Down\". This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **no**)"
+unset = true
+[[menus.arguments]]
+name = "early-failure-detection"
+type = "bool"
+description = "Netwatch will not wait for all the packets to be processed to change probe status if it is already known that the host will be considered \"Down\". This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **no**)"
+unset = true
+[[menus.arguments]]
+name = "thr-max"
+type = "time"
+description = "Fail threshold for rtt-max. (a value above thr-max is a probe fail) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **1s**)"
+unset = true
+[[menus.arguments]]
+name = "thr-avg"
+type = "time"
+description = "Fail threshold for rtt-avg. (round trip time-avg) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **100ms**)"
+unset = true
+[[menus.arguments]]
+name = "thr-stdev"
+type = "time"
+description = "Fail threshold for rtt-stdev. (standard deviation of round trip time) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **250ms**)"
+unset = true
+[[menus.arguments]]
+name = "thr-jitter"
+type = "time"
+description = "Fail threshold for rtt-jitter. (jitter ( = max - min) of round trip time) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **1s**)"
+unset = true
+[[menus.arguments]]
+name = "thr-loss-percent"
+type = "num"
+description = "Fail threshold for loss-percent. (number of lost packets in percent) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **85%**)"
+unset = true
+[[menus.arguments]]
+name = "thr-loss-count"
+type = "num"
+description = "Fail threshold for loss-count. (number of lost packets) This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type. (default value: **4294967295(max)**)"
+unset = true
+[[menus.arguments]]
+name = "port"
+type = "num"
+description = "TCP port. This parameter is specific to the [**TCP-conn**](../../diagnostics-monitoring-and-troubleshooting/netwatch#tcp-conn-probe) and [**HTTP/S-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#http-get-probe) probe types. (default value: **80** (TCP-conn, HTTP-GET) and  **443** (HTTPS-GET))"
+unset = true
+[[menus.arguments]]
+name = "thr-tcp-conn-time"
+type = "time"
+description = "Fail threshold for tcp-connect-time, the configuration uses microseconds, if the time unit is not specified (s/m/h), log and status pages display the same value in milliseconds. This parameter is specific to the [**TCP-conn**](../../diagnostics-monitoring-and-troubleshooting/netwatch#tcp-conn-probe) probe type.(default value: **1s**)"
+unset = true
+[[menus.arguments]]
+name = "thr-http-time"
+type = "time"
+description = "Fail threshold for http-resp-time. This parameter is specific to the [**HTTP/S-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#http-get-probe) probe types. (default value: **10s**)"
+unset = true
+[[menus.arguments]]
+name = "http-codes"
+type = ""
+[[menus.arguments]]
+name = "certificate"
+type = "enum (none)"
+description = "Certificate from the local store that should be used for host verification. This parameter is specific to the [**HTTPS-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#https-get-probe) probe type."
+unset = true
+[[menus.arguments]]
+name = "check-certificate"
+type = "bool"
+description = "Enables trust chain validation from the local certificate store. This parameter is specific to the [**HTTPS-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#https-get-probe) probe type. (default value: **no**)"
+unset = true
+[[menus.arguments]]
+name = "record-type"
+type = "enum (A | AAAA | MX | NS)"
+description = "Record type that will be used for DNS probe. This parameter is specific to the [**DNS**](../../diagnostics-monitoring-and-troubleshooting/netwatch#dns-probe) probe type. (default value: **A**)"
+unset = true
+[[menus.arguments]]
+name = "dns-server"
+type = "address (flags=46)"
+description = "The DNS server that the probe should send its requests to; if not specified, it will use the value from `/ip/dns`. This parameter is specific to the [**DNS**](../../diagnostics-monitoring-and-troubleshooting/netwatch#dns-probe) probe type. See [address flags](../../cli-reference/#address-flags)"
+unset = true
+[[menus.read_only]]
+name = "status"
+type = "enum (unknown | down | up)"
+description = "Current status of the probe."
+[[menus.read_only]]
+name = "since"
+type = "date"
+description = "Last time the status change happened."
+[[menus.read_only]]
+name = "done-tests"
+type = "num"
+description = "Total number of completed probe tests."
+[[menus.read_only]]
+name = "failed-tests"
+type = "num"
+description = "Total number of failed probe tests."
+[[menus.read_only]]
+name = "sent-count"
+type = "num"
+description = "Amount of ICMP packets sent out during last probe test. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "response-count"
+type = "num"
+description = "Amount of ICMP response packets received during last probe test. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "loss-count"
+type = "num"
+description = "Amount of lost ICMP response packets during last probe test. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "loss-percent"
+type = "num"
+description = "Percent of lost ICMP response packets during last probe test. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "rtt-avg"
+type = "time"
+description = "Mean value of round trip time. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "rtt-min"
+type = "time"
+description = "Minimal round trip time. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "rtt-max"
+type = "time"
+description = "Maximum round trip time. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "rtt-jitter"
+type = "time"
+description = "Jitter ( = max - min) of round trip time. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "rtt-stdev"
+type = "time"
+description = "Standard deviation of round trip time. This parameter is specific to the [**ICMP**](../../diagnostics-monitoring-and-troubleshooting/netwatch#icmp-probe) probe type."
+[[menus.read_only]]
+name = "tcp-connect-time"
+type = "time"
+description = "Time taken to establish a TCP connection. This parameter is specific to the [**TCP-conn**](../../diagnostics-monitoring-and-troubleshooting/netwatch#tcp-conn-probe) probe type."
+[[menus.read_only]]
+name = "http-status-code"
+type = "num"
+description = "HTTP response status code (200 OK, 404 Not Found, etc.). See [mozilla-http-status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) or [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6). This parameter is specific to the [**HTTP/S-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#http-get-probe) probe types."
+[[menus.read_only]]
+name = "http-resp-time"
+type = "time"
+description = "Time taken by the HTTP/S server to send a response after receiving a request, typically measured in milliseconds. This parameter is specific to the [**HTTP/S-GET**](../../diagnostics-monitoring-and-troubleshooting/netwatch#http-get-probe) probe types."
+[[menus.read_only]]
+name = "ip"
+type = "ipAddr"
+description = "IPv4 IP address - the result of A record-type probe. This parameter is specific to the [**DNS**](../../diagnostics-monitoring-and-troubleshooting/netwatch#dns-probe) probe type."
+[[menus.read_only]]
+name = "ip6"
+type = "ip6Addr"
+description = "IPv6 IP address - the result of AAAA record-type probe. This parameter is specific to the [**DNS**](../../diagnostics-monitoring-and-troubleshooting/netwatch#dns-probe) probe type."
+[[menus.read_only]]
+name = "name-servers"
+type = ""
+[[menus.read_only]]
+name = "mail-servers"
+type = ""
+
+[[menus]]
+path = "/tool/ping"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46v%Dm) { }"
+description = "IP address or DNS name of the target host. See [address flags](../../cli-reference/#address-flags)"
+[[menus.arguments]]
+name = "interval"
+type = "time"
+description = "Time interval between ICMP echo requests"
+[[menus.arguments]]
+name = "size"
+type = "num"
+description = "Size of the ICMP data payload in bytes"
+[[menus.arguments]]
+name = "ttl"
+type = "num"
+description = "Time to Live value for the ICMP packet"
+[[menus.arguments]]
+name = "dscp"
+type = "num"
+description = "DSCP value to set in the IP header for QoS marking"
+[[menus.arguments]]
+name = "do-not-fragment"
+type = "switch"
+description = "Set the Don't Fragment flag in the IP header"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "arp-ping"
+type = "bool"
+description = "Use ARP requests instead of ICMP echo to discover hosts"
+[[menus.arguments]]
+name = "count"
+type = "num"
+description = "Number of ICMP echo requests to send"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+description = "Interface to send the ping through"
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+description = "VRF table to use for routing the ping request"
+[[menus.read_only]]
+name = "seq"
+type = "num"
+description = "Sequence number of the ping response"
+[[menus.read_only]]
+name = "host"
+type = ""
+[[menus.read_only]]
+name = "size"
+type = "num"
+description = "Size of the received ICMP packet in bytes"
+[[menus.read_only]]
+name = "ttl"
+type = "num"
+description = "Time to Live value from the received packet"
+[[menus.read_only]]
+name = "time"
+type = "time"
+description = "Round-trip time of the ping probe"
+[[menus.read_only]]
+name = "status"
+type = "string"
+description = "Status of the ping response"
+[[menus.read_only]]
+name = "sent"
+type = "num"
+description = "Total number of ICMP echo requests sent"
+[[menus.read_only]]
+name = "received"
+type = "num"
+description = "Total number of ICMP echo replies received"
+[[menus.read_only]]
+name = "packet-loss"
+type = "num"
+description = "Percentage of lost packets"
+[[menus.read_only]]
+name = "min-rtt"
+type = "time"
+description = "Minimum measured round-trip time"
+[[menus.read_only]]
+name = "avg-rtt"
+type = "time"
+description = "Average measured round-trip time"
+[[menus.read_only]]
+name = "max-rtt"
+type = "time"
+description = "Maximum measured round-trip time"
+
+[[menus]]
+path = "/tool/ping-speed"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "ipAddr"
+[[menus.arguments]]
+name = "first-ping-size"
+type = "num"
+[[menus.arguments]]
+name = "second-ping-size"
+type = "num"
+[[menus.arguments]]
+name = "time-between-pings"
+type = "time"
+[[menus.read_only]]
+name = "current"
+type = "num"
+[[menus.read_only]]
+name = "average"
+type = "num"
+
+[[menus]]
+path = "/tool/profile"
+type = "Command"
+[[menus.arguments]]
+name = "cpu"
+type = "enum (all | total)"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "usage"
+type = "num"
+
+[[menus]]
+path = "/tool/romon"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "id"
+type = "macAddr"
+[[menus.arguments]]
+name = "secrets"
+type = ""
+[[menus.read_only]]
+name = "current-id"
+type = "macAddr"
+
+[[menus]]
+path = "/tool/romon/discover"
+type = "Command"
+[[menus.flags]]
+name = "A"
+description = "active"
+[[menus.read_only]]
+name = "address"
+type = "macAddr"
+[[menus.read_only]]
+name = "cost"
+type = "num"
+[[menus.read_only]]
+name = "hops"
+type = "num"
+[[menus.read_only]]
+name = "path"
+type = ""
+[[menus.read_only]]
+name = "l2mtu"
+type = "num"
+[[menus.read_only]]
+name = "identity"
+type = "string"
+[[menus.read_only]]
+name = "version"
+type = "string"
+[[menus.read_only]]
+name = "board"
+type = "string"
+[[menus.read_only]]
+name = "uptime"
+type = "time"
+
+[[menus]]
+path = "/tool/romon/ping"
+type = "Command"
+[[menus.arguments]]
+name = "id"
+type = "macAddr"
+[[menus.arguments]]
+name = "size"
+type = "num"
+[[menus.arguments]]
+name = "interval"
+type = "time"
+[[menus.arguments]]
+name = "count"
+type = "num"
+[[menus.read_only]]
+name = "seq"
+type = "num"
+[[menus.read_only]]
+name = "host"
+type = "macAddr"
+[[menus.read_only]]
+name = "time"
+type = "time"
+[[menus.read_only]]
+name = "size"
+type = "num"
+[[menus.read_only]]
+name = "status"
+type = "string"
+[[menus.read_only]]
+name = "sent"
+type = "num"
+[[menus.read_only]]
+name = "received"
+type = "num"
+[[menus.read_only]]
+name = "packet-loss"
+type = "num"
+[[menus.read_only]]
+name = "min-rtt"
+type = "time"
+[[menus.read_only]]
+name = "avg-rtt"
+type = "time"
+[[menus.read_only]]
+name = "max-rtt"
+type = "time"
+
+[[menus]]
+path = "/tool/romon/port"
+type = "Directory"
+[[menus.flags]]
+name = "*"
+description = "default"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "D"
+description = "dynamic"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum { all:nv::BADID, }"
+required = true
+[[menus.arguments]]
+name = "forbid"
+type = "bool"
+[[menus.arguments]]
+name = "cost"
+type = "num"
+[[menus.arguments]]
+name = "secrets"
+type = ""
+
+[[menus]]
+path = "/tool/romon/ssh"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "macAddr"
+[[menus.arguments]]
+name = "command"
+type = "string"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "output-to-file"
+type = "string"
+
+[[menus]]
+path = "/tool/sms"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "receive-enabled"
+type = "bool"
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "channel"
+type = "num"
+[[menus.arguments]]
+name = "secret"
+type = "string"
+[[menus.arguments]]
+name = "allowed-number"
+type = ""
+[[menus.arguments]]
+name = "sim-pin"
+type = "string"
+[[menus.arguments]]
+name = "sms-storage"
+type = "enum (modem | sim | combined)"
+description = "` in ETSI TS 127 005), will be used in further +CPMS commands (setting effective when using AT commands only)"
+[[menus.arguments]]
+name = "polling"
+type = "bool"
+description = "Poll new SMS every 5s. It's recommended to enable polling only when there are problems with receiving new SMS otherwise."
+[[menus.arguments]]
+name = "remove-sent-sms-after-send"
+type = "bool"
+description = "Useful when modem automatically stores sent SMS"
+[[menus.read_only]]
+name = "status"
+type = "bool"
+[[menus.read_only]]
+name = "last-ussd"
+type = "string"
+
+[[menus]]
+path = "/tool/sms/inbox"
+type = "Directory"
+[[menus.read_only]]
+name = "source"
+type = "string"
+[[menus.read_only]]
+name = "phone"
+type = "string"
+[[menus.read_only]]
+name = "type"
+type = "enum (class-0)"
+[[menus.read_only]]
+name = "timestamp"
+type = "string"
+[[menus.read_only]]
+name = "message"
+type = "string"
+[[menus.read_only]]
+name = "pdu"
+type = "string"
+
+[[menus]]
+path = "/tool/sms/send"
+type = "Command"
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "channel"
+type = "num"
+[[menus.arguments]]
+name = "phone-number"
+type = "string"
+[[menus.arguments]]
+name = "smsc"
+type = "string"
+[[menus.arguments]]
+name = "message"
+type = "string"
+[[menus.arguments]]
+name = "type"
+type = "enum (class-1 | class-0 | ussd)"
+[[menus.arguments]]
+name = "status-report-request"
+type = "bool"
+
+[[menus]]
+path = "/tool/sniffer"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "only-headers"
+type = "bool"
+[[menus.arguments]]
+name = "memory-limit"
+type = "num"
+[[menus.arguments]]
+name = "memory-scroll"
+type = "bool"
+[[menus.arguments]]
+name = "file-name"
+type = "file"
+[[menus.arguments]]
+name = "file-limit"
+type = "num"
+[[menus.arguments]]
+name = "streaming-enabled"
+type = "bool"
+[[menus.arguments]]
+name = "streaming-server"
+type = "composite { , }"
+[[menus.arguments]]
+name = "max-packet-size"
+type = "num"
+[[menus.arguments]]
+name = "filter-stream"
+type = "bool"
+[[menus.arguments]]
+name = "filter-interface"
+type = ""
+[[menus.arguments]]
+name = "filter-mac-address"
+type = ""
+[[menus.arguments]]
+name = "filter-src-mac-address"
+type = ""
+[[menus.arguments]]
+name = "filter-dst-mac-address"
+type = ""
+[[menus.arguments]]
+name = "filter-mac-protocol"
+type = ""
+[[menus.arguments]]
+name = "filter-ip-address"
+type = ""
+[[menus.arguments]]
+name = "filter-src-ip-address"
+type = ""
+[[menus.arguments]]
+name = "filter-dst-ip-address"
+type = ""
+[[menus.arguments]]
+name = "filter-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "filter-src-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "filter-dst-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "filter-ip-protocol"
+type = ""
+[[menus.arguments]]
+name = "filter-port"
+type = ""
+[[menus.arguments]]
+name = "filter-src-port"
+type = ""
+[[menus.arguments]]
+name = "filter-dst-port"
+type = ""
+[[menus.arguments]]
+name = "filter-vlan"
+type = ""
+[[menus.arguments]]
+name = "filter-cpu"
+type = ""
+[[menus.arguments]]
+name = "filter-size"
+type = ""
+[[menus.arguments]]
+name = "filter-direction"
+type = "enum (any | tx | rx)"
+[[menus.arguments]]
+name = "filter-operator-between-entries"
+type = "enum (or | and)"
+[[menus.arguments]]
+name = "quick-rows"
+type = "num"
+[[menus.arguments]]
+name = "quick-show-frame"
+type = "bool"
+[[menus.read_only]]
+name = "running"
+type = "bool"
+
+[[menus]]
+path = "/tool/sniffer/connection"
+type = "Directory"
+[[menus.flags]]
+name = "A"
+description = "active"
+[[menus.read_only]]
+name = "src-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "dst-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "bytes"
+type = "composite { , }"
+[[menus.read_only]]
+name = "resends"
+type = "composite { , }"
+[[menus.read_only]]
+name = "mss"
+type = "composite { , }"
+
+[[menus]]
+path = "/tool/sniffer/host"
+type = "Directory"
+[[menus.read_only]]
+name = "address"
+type = "ipAddr"
+[[menus.read_only]]
+name = "rate"
+type = "composite { , }"
+[[menus.read_only]]
+name = "peak-rate"
+type = "composite { , }"
+[[menus.read_only]]
+name = "total"
+type = "composite { , }"
+
+[[menus]]
+path = "/tool/sniffer/packet"
+type = "Directory"
+[[menus.read_only]]
+name = "time"
+type = "num"
+[[menus.read_only]]
+name = "num"
+type = "num"
+[[menus.read_only]]
+name = "direction"
+type = "enum (rx | tx)"
+[[menus.read_only]]
+name = "src-mac"
+type = "macAddr"
+[[menus.read_only]]
+name = "dst-mac"
+type = "macAddr"
+[[menus.read_only]]
+name = "vlan"
+type = ""
+[[menus.read_only]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "src-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "dst-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "protocol"
+type = "enum ()"
+[[menus.read_only]]
+name = "ip-protocol"
+type = "enum (ip)"
+[[menus.read_only]]
+name = "size"
+type = "num"
+[[menus.read_only]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "ip-packet-size"
+type = "num"
+[[menus.read_only]]
+name = "ip-header-size"
+type = "num"
+[[menus.read_only]]
+name = "dscp"
+type = "num"
+[[menus.read_only]]
+name = "ecn"
+type = "num"
+[[menus.read_only]]
+name = "identification"
+type = "num"
+[[menus.read_only]]
+name = "fragment-offset"
+type = "num"
+[[menus.read_only]]
+name = "ttl"
+type = "num"
+[[menus.read_only]]
+name = "tcp-flags"
+type = ""
+[[menus.read_only]]
+name = "data"
+type = "string"
+
+[[menus]]
+path = "/tool/sniffer/protocol"
+type = "Directory"
+[[menus.read_only]]
+name = "protocol"
+type = "enum ()"
+[[menus.read_only]]
+name = "ip-protocol"
+type = "enum (ip)"
+[[menus.read_only]]
+name = "port"
+type = "enum ()"
+[[menus.read_only]]
+name = "packets"
+type = "num"
+[[menus.read_only]]
+name = "bytes"
+type = "num"
+[[menus.read_only]]
+name = "share"
+type = "num"
+
+[[menus]]
+path = "/tool/sniffer/quick"
+type = "Command"
+[[menus.arguments]]
+name = "rows"
+type = "num"
+[[menus.arguments]]
+name = "show-frame"
+type = "bool"
+[[menus.arguments]]
+name = "interface"
+type = ""
+[[menus.arguments]]
+name = "mac-address"
+type = ""
+[[menus.arguments]]
+name = "src-mac-address"
+type = ""
+[[menus.arguments]]
+name = "dst-mac-address"
+type = ""
+[[menus.arguments]]
+name = "mac-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-address"
+type = ""
+[[menus.arguments]]
+name = "src-ip-address"
+type = ""
+[[menus.arguments]]
+name = "dst-ip-address"
+type = ""
+[[menus.arguments]]
+name = "ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "src-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "dst-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "src-port"
+type = ""
+[[menus.arguments]]
+name = "dst-port"
+type = ""
+[[menus.arguments]]
+name = "vlan-id"
+type = ""
+[[menus.arguments]]
+name = "direction"
+type = "enum (any | tx | rx)"
+[[menus.arguments]]
+name = "operator-between-entries"
+type = "enum (or | and)"
+[[menus.arguments]]
+name = "cpu"
+type = ""
+[[menus.arguments]]
+name = "size"
+type = ""
+[[menus.read_only]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "time"
+type = "num"
+[[menus.read_only]]
+name = "num"
+type = "num"
+[[menus.read_only]]
+name = "dir"
+type = "enum (<- | ->)"
+description = ")\">"
+[[menus.read_only]]
+name = "src-mac"
+type = "macAddr"
+[[menus.read_only]]
+name = "dst-mac"
+type = "macAddr"
+[[menus.read_only]]
+name = "vlan"
+type = "composite { , }"
+[[menus.read_only]]
+name = "src-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "dst-address"
+type = "composite { , }"
+[[menus.read_only]]
+name = "protocol"
+type = "composite { , }"
+[[menus.read_only]]
+name = "size"
+type = "num"
+[[menus.read_only]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "fp"
+type = "bool"
+[[menus.read_only]]
+name = "raw"
+type = "string"
+[[menus.read_only]]
+name = "dscp"
+type = "num"
+[[menus.read_only]]
+name = "ecn"
+type = "num"
+[[menus.read_only]]
+name = "fragment-offset"
+type = "num"
+[[menus.read_only]]
+name = "identification"
+type = "num"
+[[menus.read_only]]
+name = "ip-header-size"
+type = "num"
+[[menus.read_only]]
+name = "ip-packet-size"
+type = "num"
+[[menus.read_only]]
+name = "tcp-flags"
+type = ""
+[[menus.read_only]]
+name = "ttl"
+type = "num"
+
+[[menus]]
+path = "/tool/sniffer/save"
+type = "Command"
+[[menus.arguments]]
+name = "file-name"
+type = "file"
+
+[[menus]]
+path = "/tool/sniffer/start"
+type = "Command"
+[[menus.arguments]]
+name = "interface"
+type = ""
+[[menus.arguments]]
+name = "mac-address"
+type = ""
+[[menus.arguments]]
+name = "src-mac-address"
+type = ""
+[[menus.arguments]]
+name = "dst-mac-address"
+type = ""
+[[menus.arguments]]
+name = "mac-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-address"
+type = ""
+[[menus.arguments]]
+name = "src-ip-address"
+type = ""
+[[menus.arguments]]
+name = "dst-ip-address"
+type = ""
+[[menus.arguments]]
+name = "ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "src-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "dst-ipv6-address"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "src-port"
+type = ""
+[[menus.arguments]]
+name = "dst-port"
+type = ""
+[[menus.arguments]]
+name = "vlan-id"
+type = ""
+[[menus.arguments]]
+name = "direction"
+type = "enum (any | tx | rx)"
+[[menus.arguments]]
+name = "operator-between-entries"
+type = "enum (or | and)"
+[[menus.arguments]]
+name = "cpu"
+type = ""
+[[menus.arguments]]
+name = "size"
+type = ""
+
+[[menus]]
+path = "/tool/sniffer/stop"
+type = "Command"
+
+[[menus]]
+path = "/tool/snmp-get"
+type = "Command"
+[[menus.arguments]]
+name = "oid"
+type = ""
+[[menus.arguments]]
+name = "next"
+type = "bool"
+[[menus.arguments]]
+name = "address"
+type = "ipAddr"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "tries"
+type = "num"
+[[menus.arguments]]
+name = "try-timeout"
+type = "time"
+[[menus.arguments]]
+name = "version"
+type = "enum (1 | 2c | 3)"
+[[menus.arguments]]
+name = "community"
+type = "string"
+[[menus.arguments]]
+name = "security"
+type = "enum (none | authorized | private)"
+[[menus.arguments]]
+name = "authentication-password"
+type = "string"
+[[menus.arguments]]
+name = "authentication-protocol"
+type = "enum (MD5 | SHA1)"
+[[menus.arguments]]
+name = "encryption-password"
+type = "string"
+[[menus.arguments]]
+name = "encryption-protocol"
+type = "enum (DES | AES)"
+[[menus.read_only]]
+name = "oid"
+type = "string"
+[[menus.read_only]]
+name = "type"
+type = "enum (null | integer | counter | gauge | timeticks | unsigned-integer | octet-string | opaque | o..."
+[[menus.read_only]]
+name = "value"
+type = "string"
+
+[[menus]]
+path = "/tool/snmp-walk"
+type = "Command"
+[[menus.arguments]]
+name = "oid"
+type = "string"
+[[menus.arguments]]
+name = "address"
+type = "ipAddr"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "tries"
+type = "num"
+[[menus.arguments]]
+name = "try-timeout"
+type = "time"
+[[menus.arguments]]
+name = "version"
+type = "enum (1 | 2c | 3)"
+[[menus.arguments]]
+name = "community"
+type = "string"
+[[menus.arguments]]
+name = "security"
+type = "enum (none | authorized | private)"
+[[menus.arguments]]
+name = "authentication-password"
+type = "string"
+[[menus.arguments]]
+name = "authentication-protocol"
+type = "enum (MD5 | SHA1)"
+[[menus.arguments]]
+name = "encryption-password"
+type = "string"
+[[menus.arguments]]
+name = "encryption-protocol"
+type = "enum (DES | AES)"
+[[menus.read_only]]
+name = "oid"
+type = "string"
+[[menus.read_only]]
+name = "type"
+type = "enum (null | integer | counter | gauge | timeticks | unsigned-integer | octet-string | opaque | o..."
+[[menus.read_only]]
+name = "value"
+type = "string"
+
+[[menus]]
+path = "/tool/speed-test"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46viD)"
+[[menus.arguments]]
+name = "connection-count"
+type = "num"
+[[menus.arguments]]
+name = "test-duration"
+type = "time"
+[[menus.arguments]]
+name = "user"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.read_only]]
+name = "status"
+type = "string"
+[[menus.read_only]]
+name = "time-remaining"
+type = "time"
+[[menus.read_only]]
+name = "ping-min-avg-max"
+type = "string"
+[[menus.read_only]]
+name = "jitter-min-avg-max"
+type = "string"
+[[menus.read_only]]
+name = "loss"
+type = "string"
+[[menus.read_only]]
+name = "tcp-download"
+type = "string"
+[[menus.read_only]]
+name = "tcp-upload"
+type = "string"
+[[menus.read_only]]
+name = "udp-download"
+type = "string"
+[[menus.read_only]]
+name = "udp-upload"
+type = "string"
+
+[[menus]]
+path = "/tool/torch"
+type = "Command"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "dst-address"
+type = ""
+[[menus.arguments]]
+name = "src-address6"
+type = ""
+[[menus.arguments]]
+name = "dst-address6"
+type = ""
+[[menus.arguments]]
+name = "mac-protocol"
+type = "enum (any)"
+[[menus.arguments]]
+name = "ip-protocol"
+type = "enum (any)"
+[[menus.arguments]]
+name = "port"
+type = "enum (any)"
+[[menus.arguments]]
+name = "vlan-id"
+type = ""
+[[menus.arguments]]
+name = "dscp"
+type = "num"
+[[menus.arguments]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "cpu"
+type = "num"
+[[menus.read_only]]
+name = "vlan-id"
+type = "num"
+[[menus.read_only]]
+name = "mac-protocol"
+type = "enum ()"
+[[menus.read_only]]
+name = "ip-protocol"
+type = "enum ()"
+[[menus.read_only]]
+name = "dscp"
+type = "num"
+[[menus.read_only]]
+name = "src-address"
+type = ""
+[[menus.read_only]]
+name = "src-port"
+type = "enum ()"
+[[menus.read_only]]
+name = "dst-address"
+type = ""
+[[menus.read_only]]
+name = "dst-port"
+type = "enum ()"
+[[menus.read_only]]
+name = "tx"
+type = "num"
+[[menus.read_only]]
+name = "rx"
+type = "num"
+[[menus.read_only]]
+name = "tx-packets"
+type = "num"
+[[menus.read_only]]
+name = "rx-packets"
+type = "num"
+
+[[menus]]
+path = "/tool/traceroute"
+type = "Command"
+[[menus.arguments]]
+name = "address"
+type = "address (flags=46viD)"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "size"
+type = "num"
+[[menus.arguments]]
+name = "dscp"
+type = "num"
+[[menus.arguments]]
+name = "do-not-fragment"
+type = "switch"
+[[menus.arguments]]
+name = "use-dns"
+type = "bool"
+[[menus.arguments]]
+name = "count"
+type = "num"
+[[menus.arguments]]
+name = "max-hops"
+type = "num"
+[[menus.arguments]]
+name = "protocol"
+type = "enum (icmp | udp)"
+[[menus.arguments]]
+name = "src-address"
+type = ""
+[[menus.arguments]]
+name = "timeout"
+type = "time"
+[[menus.arguments]]
+name = "vrf"
+type = "enum"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "address"
+type = ""
+[[menus.read_only]]
+name = "loss"
+type = "num"
+[[menus.read_only]]
+name = "sent"
+type = "num"
+[[menus.read_only]]
+name = "last"
+type = "num"
+[[menus.read_only]]
+name = "avg"
+type = "num"
+[[menus.read_only]]
+name = "best"
+type = "num"
+[[menus.read_only]]
+name = "worst"
+type = "num"
+[[menus.read_only]]
+name = "std-dev"
+type = "num"
+[[menus.read_only]]
+name = "status"
+type = "string"
+[[menus.read_only]]
+name = "error"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "test-id"
+type = "num"
+[[menus.arguments]]
+name = "measure-out-of-order"
+type = "bool"
+[[menus.arguments]]
+name = "latency-distribution-max"
+type = "time"
+[[menus.arguments]]
+name = "stats-samples-to-keep"
+type = "num"
+[[menus.read_only]]
+name = "running"
+type = "bool"
+[[menus.read_only]]
+name = "latency-distribution-samples"
+type = "num"
+[[menus.read_only]]
+name = "latency-distribution-measure-interval"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator/inject"
+type = "Command"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "data"
+type = "string"
+[[menus.arguments]]
+name = "priority"
+type = "num"
+unset = true
+
+[[menus]]
+path = "/tool/traffic-generator/inject-pcap"
+type = "Command"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "pcap-file"
+type = "file"
+[[menus.arguments]]
+name = "speed-multiplier"
+type = "num"
+[[menus.arguments]]
+name = "loop"
+type = "bool"
+[[menus.read_only]]
+name = "iteration"
+type = "num"
+[[menus.read_only]]
+name = "tx-packets"
+type = "num"
+[[menus.read_only]]
+name = "tx-bytes"
+type = "num"
+
+[[menus]]
+path = "/tool/traffic-generator/packet-template"
+type = "Directory"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "header-stack"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = "enum"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+[[menus.arguments]]
+name = "mac-src"
+type = ""
+[[menus.arguments]]
+name = "mac-dst"
+type = ""
+[[menus.arguments]]
+name = "mac-protocol"
+type = ""
+[[menus.arguments]]
+name = "vlan-priority"
+type = ""
+[[menus.arguments]]
+name = "vlan-id"
+type = ""
+[[menus.arguments]]
+name = "vlan-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-dscp"
+type = ""
+[[menus.arguments]]
+name = "ip-id"
+type = ""
+[[menus.arguments]]
+name = "ip-frag-off"
+type = ""
+[[menus.arguments]]
+name = "ip-ttl"
+type = ""
+[[menus.arguments]]
+name = "ip-src"
+type = ""
+[[menus.arguments]]
+name = "ip-dst"
+type = ""
+[[menus.arguments]]
+name = "ip-protocol"
+type = ""
+[[menus.arguments]]
+name = "ip-gateway"
+type = "ipAddr"
+[[menus.arguments]]
+name = "udp-src-port"
+type = ""
+[[menus.arguments]]
+name = "udp-dst-port"
+type = ""
+[[menus.arguments]]
+name = "udp-checksum"
+type = ""
+[[menus.arguments]]
+name = "raw-header"
+type = ""
+[[menus.arguments]]
+name = "ipv6-src"
+type = ""
+[[menus.arguments]]
+name = "ipv6-dst"
+type = ""
+[[menus.arguments]]
+name = "ipv6-next-header"
+type = ""
+[[menus.arguments]]
+name = "ipv6-gateway"
+type = "ip6Addr"
+[[menus.arguments]]
+name = "ipv6-traffic-class"
+type = ""
+[[menus.arguments]]
+name = "ipv6-flow-label"
+type = ""
+[[menus.arguments]]
+name = "ipv6-hop-limit"
+type = ""
+[[menus.arguments]]
+name = "tcp-src-port"
+type = ""
+[[menus.arguments]]
+name = "tcp-dst-port"
+type = ""
+[[menus.arguments]]
+name = "tcp-syn"
+type = ""
+[[menus.arguments]]
+name = "tcp-ack"
+type = ""
+[[menus.arguments]]
+name = "tcp-data-offset"
+type = ""
+[[menus.arguments]]
+name = "tcp-flags"
+type = ""
+[[menus.arguments]]
+name = "tcp-window-size"
+type = ""
+[[menus.arguments]]
+name = "tcp-urgent-pointer"
+type = ""
+[[menus.arguments]]
+name = "data"
+type = "enum (uninitialized | random | specific-byte | incrementing)"
+[[menus.arguments]]
+name = "data-byte"
+type = "num"
+[[menus.arguments]]
+name = "random-byte-offsets-and-masks"
+type = ""
+[[menus.arguments]]
+name = "random-ranges"
+type = ""
+[[menus.arguments]]
+name = "special-footer"
+type = "bool"
+[[menus.arguments]]
+name = "compute-checksum-from-offset"
+type = "num"
+[[menus.read_only]]
+name = "assumed-port"
+type = "enum (none)"
+[[menus.read_only]]
+name = "assumed-interface"
+type = "iface_enum"
+[[menus.read_only]]
+name = "assumed-mac-src"
+type = ""
+[[menus.read_only]]
+name = "assumed-mac-dst"
+type = ""
+[[menus.read_only]]
+name = "assumed-mac-protocol"
+type = ""
+[[menus.read_only]]
+name = "assumed-vlan-priority"
+type = ""
+[[menus.read_only]]
+name = "assumed-vlan-id"
+type = ""
+[[menus.read_only]]
+name = "assumed-vlan-protocol"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-dscp"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-id"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-frag-off"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-ttl"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-src"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-dst"
+type = ""
+[[menus.read_only]]
+name = "assumed-ip-protocol"
+type = ""
+[[menus.read_only]]
+name = "assumed-udp-src-port"
+type = ""
+[[menus.read_only]]
+name = "assumed-udp-dst-port"
+type = ""
+[[menus.read_only]]
+name = "assumed-udp-checksum"
+type = ""
+[[menus.read_only]]
+name = "assumed-raw-header"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-src"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-dst"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-next-header"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-traffic-class"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-flow-label"
+type = ""
+[[menus.read_only]]
+name = "assumed-ipv6-hop-limit"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-src-port"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-dst-port"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-syn"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-ack"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-data-offset"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-flags"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-window-size"
+type = ""
+[[menus.read_only]]
+name = "assumed-tcp-urgent-pointer"
+type = ""
+
+[[menus]]
+path = "/tool/traffic-generator/port"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "I"
+description = "invalid"
+[[menus.flags]]
+name = "D"
+description = "dynamic"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+required = true
+[[menus.read_only]]
+name = "first-header"
+type = "enum (mac | vlan | ip | udp | raw | ipv6 | tcp)"
+
+[[menus]]
+path = "/tool/traffic-generator/quick"
+type = "Command"
+[[menus.arguments]]
+name = "entries-to-show"
+type = "num"
+[[menus.arguments]]
+name = "test-id"
+type = "num"
+[[menus.arguments]]
+name = "measure-out-of-order"
+type = "bool"
+[[menus.arguments]]
+name = "cpu-core"
+type = ""
+[[menus.arguments]]
+name = "stream"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "interface"
+type = ""
+[[menus.arguments]]
+name = "id"
+type = ""
+[[menus.arguments]]
+name = "packet-size"
+type = ""
+[[menus.arguments]]
+name = "pps"
+type = ""
+[[menus.arguments]]
+name = "mbps"
+type = ""
+[[menus.arguments]]
+name = "tx-template"
+type = ""
+[[menus.arguments]]
+name = "packet-count"
+type = ""
+[[menus.read_only]]
+name = "seq"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "id"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "tx-packet"
+type = "num"
+[[menus.read_only]]
+name = "tx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-packet"
+type = "num"
+[[menus.read_only]]
+name = "rx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-ooo"
+type = "num"
+[[menus.read_only]]
+name = "rx-bad-csum"
+type = "num"
+[[menus.read_only]]
+name = "lost-packet"
+type = "num"
+[[menus.read_only]]
+name = "lost-rate"
+type = "num"
+[[menus.read_only]]
+name = "lost-ratio"
+type = "string"
+[[menus.read_only]]
+name = "lat-min"
+type = "string"
+[[menus.read_only]]
+name = "lat-avg"
+type = "string"
+[[menus.read_only]]
+name = "lat-max"
+type = "string"
+[[menus.read_only]]
+name = "jitter"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator/raw-packet-template"
+type = "Directory"
+[[menus.flags]]
+name = "D"
+description = "dynamic"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+[[menus.arguments]]
+name = "header"
+type = "string"
+[[menus.arguments]]
+name = "data"
+type = "enum (uninitialized | random | specific-byte | incrementing)"
+[[menus.arguments]]
+name = "data-byte"
+type = "num"
+[[menus.arguments]]
+name = "random-byte-offsets-and-masks"
+type = ""
+[[menus.arguments]]
+name = "random-ranges"
+type = ""
+[[menus.arguments]]
+name = "ip-header-offset"
+type = ""
+[[menus.arguments]]
+name = "ipv6-header-offset"
+type = ""
+[[menus.arguments]]
+name = "udp-header-offset"
+type = ""
+[[menus.arguments]]
+name = "udp-compute-checksum"
+type = ""
+[[menus.arguments]]
+name = "tcp-header-offset"
+type = ""
+[[menus.arguments]]
+name = "special-footer"
+type = "bool"
+[[menus.arguments]]
+name = "compute-checksum-from-offset"
+type = "num"
+[[menus.read_only]]
+name = "header-length"
+type = "num"
+
+[[menus]]
+path = "/tool/traffic-generator/start"
+type = "Command"
+[[menus.arguments]]
+name = "test-id"
+type = "num"
+[[menus.arguments]]
+name = "measure-out-of-order"
+type = "bool"
+[[menus.arguments]]
+name = "cpu-core"
+type = ""
+[[menus.arguments]]
+name = "stream"
+type = ""
+[[menus.arguments]]
+name = "port"
+type = ""
+[[menus.arguments]]
+name = "interface"
+type = ""
+[[menus.arguments]]
+name = "id"
+type = ""
+[[menus.arguments]]
+name = "packet-size"
+type = ""
+[[menus.arguments]]
+name = "pps"
+type = ""
+[[menus.arguments]]
+name = "mbps"
+type = ""
+[[menus.arguments]]
+name = "tx-template"
+type = ""
+[[menus.arguments]]
+name = "packet-count"
+type = ""
+
+[[menus]]
+path = "/tool/traffic-generator/stats"
+type = "Directory"
+
+[[menus]]
+path = "/tool/traffic-generator/stats/latency-distribution"
+type = "Directory"
+[[menus.arguments]]
+name = "stream-id"
+type = "num"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+[[menus.arguments]]
+name = "seq"
+type = "range"
+[[menus.read_only]]
+name = "latency"
+type = "string"
+[[menus.read_only]]
+name = "count"
+type = "num"
+[[menus.read_only]]
+name = "share"
+type = "num"
+[[menus.read_only]]
+name = "graph"
+type = "meter"
+
+[[menus]]
+path = "/tool/traffic-generator/stats/port"
+type = "Directory"
+[[menus.read_only]]
+name = "seq"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "port"
+type = "composite { , }"
+[[menus.read_only]]
+name = "rx-unk-packet"
+type = "num"
+[[menus.read_only]]
+name = "rx-unk-byte"
+type = "num"
+[[menus.read_only]]
+name = "rx-unk-rate"
+type = "num"
+[[menus.read_only]]
+name = "tx-packet"
+type = "num"
+[[menus.read_only]]
+name = "tx-byte"
+type = "num"
+[[menus.read_only]]
+name = "tx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-packet"
+type = "num"
+[[menus.read_only]]
+name = "rx-byte"
+type = "num"
+[[menus.read_only]]
+name = "rx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-ooo"
+type = "num"
+[[menus.read_only]]
+name = "rx-bad-csum"
+type = "num"
+[[menus.read_only]]
+name = "lost-packet"
+type = "num"
+[[menus.read_only]]
+name = "lost-byte"
+type = "num"
+[[menus.read_only]]
+name = "lost-rate"
+type = "num"
+[[menus.read_only]]
+name = "lost-ratio"
+type = "string"
+[[menus.read_only]]
+name = "lat-min"
+type = "string"
+[[menus.read_only]]
+name = "lat-avg"
+type = "string"
+[[menus.read_only]]
+name = "lat-max"
+type = "string"
+[[menus.read_only]]
+name = "jitter"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator/stats/raw"
+type = "Directory"
+[[menus.read_only]]
+name = "seq"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "port"
+type = "composite { , }"
+[[menus.read_only]]
+name = "id"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "tx-packet"
+type = "num"
+[[menus.read_only]]
+name = "tx-byte"
+type = "num"
+[[menus.read_only]]
+name = "tx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-packet"
+type = "num"
+[[menus.read_only]]
+name = "rx-byte"
+type = "num"
+[[menus.read_only]]
+name = "rx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-ooo"
+type = "num"
+[[menus.read_only]]
+name = "rx-bad-csum"
+type = "num"
+[[menus.read_only]]
+name = "lost-packet"
+type = "num"
+[[menus.read_only]]
+name = "lost-byte"
+type = "num"
+[[menus.read_only]]
+name = "lost-rate"
+type = "num"
+[[menus.read_only]]
+name = "lost-ratio"
+type = "string"
+[[menus.read_only]]
+name = "lat-min"
+type = "string"
+[[menus.read_only]]
+name = "lat-avg"
+type = "string"
+[[menus.read_only]]
+name = "lat-max"
+type = "string"
+[[menus.read_only]]
+name = "jitter"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator/stats/stream"
+type = "Directory"
+[[menus.read_only]]
+name = "seq"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "id"
+type = "enum (TOT)"
+[[menus.read_only]]
+name = "tx-packet"
+type = "num"
+[[menus.read_only]]
+name = "tx-byte"
+type = "num"
+[[menus.read_only]]
+name = "tx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-packet"
+type = "num"
+[[menus.read_only]]
+name = "rx-byte"
+type = "num"
+[[menus.read_only]]
+name = "rx-rate"
+type = "num"
+[[menus.read_only]]
+name = "rx-ooo"
+type = "num"
+[[menus.read_only]]
+name = "rx-bad-csum"
+type = "num"
+[[menus.read_only]]
+name = "lost-packet"
+type = "num"
+[[menus.read_only]]
+name = "lost-byte"
+type = "num"
+[[menus.read_only]]
+name = "lost-rate"
+type = "num"
+[[menus.read_only]]
+name = "lost-ratio"
+type = "string"
+[[menus.read_only]]
+name = "lat-min"
+type = "string"
+[[menus.read_only]]
+name = "lat-avg"
+type = "string"
+[[menus.read_only]]
+name = "lat-max"
+type = "string"
+[[menus.read_only]]
+name = "jitter"
+type = "string"
+
+[[menus]]
+path = "/tool/traffic-generator/stop"
+type = "Command"
+
+[[menus]]
+path = "/tool/traffic-generator/stream"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "I"
+description = "invalid"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "port"
+type = "enum"
+[[menus.arguments]]
+name = "id"
+type = "num"
+[[menus.arguments]]
+name = "packet-size"
+type = "range"
+[[menus.arguments]]
+name = "pps"
+type = "num"
+[[menus.arguments]]
+name = "mbps"
+type = "num"
+[[menus.arguments]]
+name = "packet-count"
+type = "num"
+[[menus.arguments]]
+name = "cpu-core"
+type = "range"
+[[menus.arguments]]
+name = "tx-template"
+type = "enum"
+required = true
+[[menus.read_only]]
+name = "default-port"
+type = "enum"
+
+[[menus]]
+path = "/tool/traffic-monitor"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = "disabled"
+[[menus.flags]]
+name = "I"
+description = "invalid"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+required = true
+[[menus.arguments]]
+name = "traffic"
+type = "enum (transmitted | received)"
+[[menus.arguments]]
+name = "trigger"
+type = "enum (above | below | always)"
+[[menus.arguments]]
+name = "threshold"
+type = "num"
+[[menus.arguments]]
+name = "on-event"
+type = ""
+
+[[menus]]
+path = "/tool/wol"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "interface"
+type = "iface_enum"
+description = "Interface through which the Magic Packet will be sent"
+[[menus.arguments]]
+name = "mac"
+type = "macAddr"
+description = "MAC address of the target computer"
+[[menus.arguments]]
+name = "enabled"
+type = "bool"
+[[menus.arguments]]
+name = "acs-url"
+type = "string"
+[[menus.arguments]]
+name = "username"
+type = "string"
+[[menus.arguments]]
+name = "password"
+type = "string"
+[[menus.arguments]]
+name = "periodic-inform-enabled"
+type = "bool"
+[[menus.arguments]]
+name = "periodic-inform-interval"
+type = "time"
+[[menus.arguments]]
+name = "connection-request-username"
+type = "string"
+[[menus.arguments]]
+name = "connection-request-password"
+type = "string"
+[[menus.arguments]]
+name = "connection-request-port"
+type = "num"
+[[menus.arguments]]
+name = "provisioning-code"
+type = "string"
+[[menus.arguments]]
+name = "client-certificate"
+type = "enum (none)"
+[[menus.arguments]]
+name = "check-certificate"
+type = "enum (yes | no)"
+[[menus.read_only]]
+name = "status"
+type = "enum (disabled | initializing | error | waiting-url | running)"
+[[menus.read_only]]
+name = "last-session-error"
+type = "string"
+[[menus.read_only]]
+name = "retry-count"
+type = "num"
+
+[[menus]]
+path = "/user/aaa"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "use-radius"
+type = "bool"
+[[menus.arguments]]
+name = "accounting"
+type = "bool"
+[[menus.arguments]]
+name = "interim-update"
+type = "time"
+[[menus.arguments]]
+name = "default-group"
+type = "enum"
+[[menus.arguments]]
+name = "exclude-groups"
+type = ""
+
+[[menus]]
+path = "/user/active"
+type = "Directory"
+[[menus.flags]]
+name = "R"
+description = "radius"
+[[menus.flags]]
+name = "M"
+description = "by-romon"
+[[menus.read_only]]
+name = "when"
+type = "date"
+[[menus.read_only]]
+name = "name"
+type = "string"
+[[menus.read_only]]
+name = "address"
+type = ""
+[[menus.read_only]]
+name = "by-romon"
+type = "macAddr"
+[[menus.read_only]]
+name = "via"
+type = "enum (unknown | winbox | console | telnet | ftp | web | ssh | mac-telnet | bandwidth-test | api |..."
+[[menus.read_only]]
+name = "group"
+type = "enum"
+
+[[menus]]
+path = "/user/expire-password"
+type = "Command"
+
+[[menus]]
+path = "/user/group"
+type = "Directory"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "policy"
+type = ""
+[[menus.arguments]]
+name = "skin"
+type = "enum"
+
+[[menus]]
+path = "/user/settings"
+type = "Settings Directory"
+[[menus.arguments]]
+name = "minimum-password-length"
+type = "num"
+[[menus.arguments]]
+name = "minimum-categories"
+type = "num"
+
+[[menus]]
+path = "/user/ssh-keys"
+type = "Directory"
+[[menus.arguments]]
+name = "user"
+type = "enum"
+[[menus.arguments]]
+name = "key"
+type = "string"
+description = "only for adding new keys"
+[[menus.read_only]]
+name = "key-type"
+type = "enum (rsa | ed25519 | ed25519-sk)"
+[[menus.read_only]]
+name = "bits"
+type = "num"
+[[menus.read_only]]
+name = "info"
+type = "string"
+[[menus.read_only]]
+name = "fingerprint"
+type = "string"
+
+[[menus]]
+path = "/user/ssh-keys/import"
+type = "Command"
+[[menus.arguments]]
+name = "public-key-file"
+type = "file"
+[[menus.arguments]]
+name = "user"
+type = "enum"
+[[menus.arguments]]
+name = "info"
+type = "string"
+
+[[menus]]
+path = "/user/ssh-keys/private"
+type = "Directory"
+[[menus.read_only]]
+name = "user"
+type = "enum"
+[[menus.read_only]]
+name = "key-type"
+type = "enum (rsa | ed25519)"
+[[menus.read_only]]
+name = "bits"
+type = "num"
+[[menus.read_only]]
+name = "info"
+type = "string"
+
+[[menus]]
+path = "/user/ssh-keys/private/import"
+type = "Directory"
+[[menus.flags]]
+name = "X"
+description = ""
+[[menus.flags]]
+name = "R"
+description = ""
+[[menus.flags]]
+name = "F"
+description = ""
+[[menus.arguments]]
+name = "private-key-file"
+type = "file"
+[[menus.arguments]]
+name = "user"
+type = "enum"
+[[menus.arguments]]
+name = "passphrase"
+type = "string"
+[[menus.arguments]]
+name = "info"
+type = "string"
+[[menus.arguments]]
+name = "name"
+type = "string"
+[[menus.arguments]]
+name = "disabled"
+type = "bool"
+[[menus.arguments]]
+name = "port"
+type = "num"
+[[menus.arguments]]
+name = "identity"
+type = "string"
+[[menus.arguments]]
+name = "interfaces"
+type = ""
+[[menus.arguments]]
+name = "route-distance"
+type = "num"
+[[menus.arguments]]
+name = "backup-priorities"
+type = ""
+[[menus.read_only]]
+name = "identity.public"
+type = "string"
+[[menus.read_only]]
+name = "state"
+type = "string"
+[[menus.read_only]]
+name = "moons"
+type = ""

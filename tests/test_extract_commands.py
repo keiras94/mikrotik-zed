@@ -78,19 +78,28 @@ class TestShouldInclude:
     def test_routing_rule(self):
         assert should_include("/routing/rule") is True
 
-    # ── Excluded menus ───────────────────────────────────────
-
-    def test_excluded_system(self):
-        assert should_include("/system/identity") is False
-
-    def test_excluded_tool(self):
-        assert should_include("/tool/ping") is False
+    # ── Excluded menus (still out of scope) ──────────────────
 
     def test_excluded_certificate(self):
         assert should_include("/certificate") is False
 
-    def test_excluded_user(self):
-        assert should_include("/user") is False
+    # ── Now included under full extraction ────────────────────
+
+    def test_now_included_system(self):
+        """System is now included under full extraction."""
+        assert should_include("/system/identity") is True
+
+    def test_now_included_tool(self):
+        """Tool is now included under full extraction."""
+        assert should_include("/tool/ping") is True
+
+    def test_now_included_user(self):
+        """User is now included under full extraction."""
+        assert should_include("/user") is True
+
+    def test_now_included_queue(self):
+        """Queue is now included under full extraction."""
+        assert should_include("/queue/simple") is True
 
     def test_now_included_ip_arp(self):
         """ARP is now included under full /ip extraction."""
@@ -106,7 +115,9 @@ class TestShouldInclude:
         assert should_include("") is False
 
     def test_root_only(self):
-        assert should_include("/ip") is False  # Needs sub-menu
+        """Root-only paths are included if the root is in TARGET_ROOTS."""
+        assert should_include("/ip") is True
+        assert should_include("/certificate") is False  # Not in TARGET_ROOTS
 
     def test_deeply_nested_firewall(self):
         assert should_include("/ip/firewall/filter/reset-counters") is True
