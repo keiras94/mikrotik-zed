@@ -351,8 +351,15 @@ pub fn parse_line(data: &MenuData, before_cursor: &str) -> LineContext {
 
         if !path_parts.is_empty() {
             let current_path = format!("/{}", path_parts.join("/"));
-            let candidate = format!("{}/{}", current_path, token);
-            if data.menu_by_path.contains_key(&candidate) {
+            // Use child_names_by_parent (not menu_by_path) so implicit
+            // intermediate menus like /ip/firewall are recognized as valid
+            // path segments even though they have no direct TOML entry.
+            let is_sub_menu = data
+                .child_names_by_parent
+                .get(&current_path)
+                .map(|children| children.iter().any(|c| c.name == *token))
+                .unwrap_or(false);
+            if is_sub_menu {
                 path_parts.push(token.clone());
             } else {
                 command = Some(token.clone());

@@ -44,11 +44,17 @@ pub fn compute_completions(data: &MenuData, before_cursor: &str) -> Vec<Completi
         }
     }
 
-    // Everything else: gather ALL candidate types
+    // If a verb is already typed (e.g., "add", "print"), only suggest
+    // arguments — no more sub-menus or verbs.  This matches real RouterOS
+    // terminal behavior where Tab after "add" shows property completions.
+    if context.command.is_some() {
+        return get_arg_completion_items(data, &context);
+    }
+
+    // Before a verb: suggest sub-menus + standard verbs
     let mut items = Vec::new();
     items.extend(get_sub_menu_completion_items(data, &context));
     items.extend(get_verb_completion_items(data, &context));
-    items.extend(get_arg_completion_items(data, &context));
     items
 }
 
