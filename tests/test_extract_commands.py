@@ -92,12 +92,13 @@ class TestShouldInclude:
     def test_excluded_user(self):
         assert should_include("/user") is False
 
-    def test_excluded_ip_arp(self):
-        """ARP is NOT in the scope (only address, route, firewall, dhcp, dns, service)."""
-        assert should_include("/ip/arp") is False
+    def test_now_included_ip_arp(self):
+        """ARP is now included under full /ip extraction."""
+        assert should_include("/ip/arp") is True
 
-    def test_excluded_ip_pool(self):
-        assert should_include("/ip/pool") is False
+    def test_now_included_ip_pool(self):
+        """Pool is now included under full /ip extraction."""
+        assert should_include("/ip/pool") is True
 
     # ── Edge cases ───────────────────────────────────────────
 

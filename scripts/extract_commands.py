@@ -16,10 +16,12 @@ from pathlib import Path
 
 
 # Target root menus and their sub-menus (from AGENTS.md)
+# Phase 2: full extraction for /interface, /ip, /ipv6
+# /routing keeps scoped whitelist
 TARGET_ROOTS = {
-    "/ip": {"address", "route", "firewall", "dhcp-server", "dns", "service"},
-    "/ipv6": {"address", "dhcp-client", "nd", "firewall", "route"},
-    "/interface": {"bridge", "vlan", "pppoe-client", "ethernet"},
+    "/ip": None,          # None = include ALL sub-menus recursively
+    "/ipv6": None,        # None = include ALL sub-menus recursively
+    "/interface": None,   # None = include ALL sub-menus recursively
     "/routing": {"ospf", "bgp", "table", "rule"},
 }
 
@@ -32,12 +34,11 @@ FIREWALL_PREFIXES = {
 
 
 def should_include(menu_path: str) -> bool:
-    """Check if a menu path belongs to one of the 4 target root menus."""
+    """Check if a menu path belongs to one of the target root menus."""
     if not menu_path:
         return False
 
     # Normalize: strip trailing sub-command indicators like /monitor, /print, etc.
-    # But keep the full path for now — filtering happens at root level
     parts = menu_path.strip("/").split("/")
     if len(parts) < 2:
         return False
@@ -46,16 +47,20 @@ def should_include(menu_path: str) -> bool:
     if root not in TARGET_ROOTS:
         return False
 
-    # For /ip and /ipv6, check if the second-level menu is in the target set
-    first_sub = parts[1]
     allowed = TARGET_ROOTS[root]
+
+    # None means include ALL sub-menus under this root
+    if allowed is None:
+        return True
+
+    # Otherwise, check if the first sub-menu is in the whitelist
+    # Handle firewall specially: /ip/firewall/filter -> parts[1] = "firewall"
+    first_sub = parts[1]
 
     if first_sub in allowed:
         return True
 
     # Special case: firewall has many sub-sub-menus (filter, nat, mangle, etc.)
-    # "ip/firewall/filter" -> parts = ["ip", "firewall", "filter"]
-    # first_sub = "firewall" which is in allowed
     if "firewall" in menu_path.lower():
         return True
 
@@ -215,7 +220,7 @@ def generate_toml(menus: list[dict]) -> str:
         "# Auto-generated from llms-full.txt"
     )
     lines.append(
-        "# Covers: /ip, /ipv6, /interface, /routing (scoped per AGENTS.md)"
+        "# Covers: /interface, /ip, /ipv6 (full), /routing (scoped)"
     )
     lines.append("")
 
