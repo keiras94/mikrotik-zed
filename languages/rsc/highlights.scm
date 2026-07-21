@@ -1,11 +1,11 @@
 ; ── MikroTik RouterOS Script — highlights ────────────────────────
 ; Color scheme (matches RouterOS terminal):
-;   Azul    = root menu (primer comando tras /)
-;   Verde   = sub-menús y comandos
-;   Naranja = propiedades/variables (name=value)
-;   Rojo    = strings
-;   Cyan    = números, IPs
-;   Gris    = comentarios
+;   Blue   = root menu (first command after /)
+;   Green  = sub-menus and commands
+;   Orange = properties/variables (name=value)
+;   Red    = strings
+;   Cyan   = numbers, IPs
+;   Grey   = comments
 
 ; ── Comments ─────────────────────────────────────────────────────
 (comment) @comment
@@ -13,15 +13,15 @@
 ; ── Menu prefix "/" ──────────────────────────────────────────────
 (menu_prefix) @punctuation.special
 
-; ── Root menu — first command after / (azul) ────────────────────
+; ── Root menu — first command after / (blue) ────────────────────
 ; e.g. "ip" in /ip route add …
 (root_menu
   (identifier) @function)
 
-; ── Sub-menus — subsequent segments (verde) ────────────────────
+; ── Sub-menus — subsequent segments (green) ────────────────────
 ; e.g. "route", "add" in /ip route add …
 
-; ── Catch-all: bare identifiers in menu_command → naranja ───────
+; ── Catch-all: bare identifiers in menu_command → orange ───────
 ; These are typically values after line continuation like `password=\nvalue`
 ; Must come BEFORE sub_menu/named_param so specific rules override it
 (menu_command
@@ -30,18 +30,18 @@
 (sub_menu
   (identifier) @string)
 
-; ── Action commands (morado) ──────────────────────────────────
+; ── Action commands (purple) ──────────────────────────────────
 ; Override sub_menu green for commands that modify/query state
 ((sub_menu
   (identifier) @keyword)
   (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
 
 ; ── Identifiers inside command_substitution / menu_continuation ──
-; Commands like "find", "set" inside [...] → verde
+; Commands like "find", "set" inside [...] → green
 (command_substitution
   (identifier) @string)
 
-; Action commands inside [...] → morado
+; Action commands inside [...] → purple
 ((command_substitution
   (identifier) @keyword)
   (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
@@ -49,17 +49,17 @@
 (menu_continuation
   (identifier) @string)
 
-; Action commands in continuation → morado
+; Action commands in continuation → purple
 ((menu_continuation
   (identifier) @keyword)
   (#match? @keyword "^(add|remove|set|get|print|enable|disable|find|comment|move|export|import|edit|reset|force-update|beep|blink|password|quit|redo|undo|ping)$"))
 
 ; ── Named parameters — property=value ──────────────────────────
-; Property name → amarillo (como en la terminal de MikroTik)
+; Property name → yellow (like the MikroTik terminal)
 (named_param
   name: (identifier) @type)
 
-; Property value (identifiers like ether1, bridge) → naranja
+; Property value (identifiers like ether1, bridge) → orange
 (named_param
   value: (identifier) @constant)
 
