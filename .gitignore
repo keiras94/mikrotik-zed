@@ -18,6 +18,9 @@ grammar-bare.git/
 .DS_Store
 Thumbs.db
 
+# Playwright MCP artifacts
+blob/
+
 # Temporary files
 *.tmp
 *.log

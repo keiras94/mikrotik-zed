@@ -4,7 +4,7 @@ use zed_extension_api::{self as zed, LanguageServerId, Result, Worktree};
 
 // ── Embedded command table ────────────────────────────────────────
 
-const COMMANDS_TOML: &str = include_str!("../data/commands.toml");
+const COMMANDS_TOML: &str = include_str!("../../data/commands.toml");
 
 // ── Data structures ───────────────────────────────────────────────
 
@@ -107,21 +107,19 @@ impl zed::Extension for RscExtension {
         _language_server_id: &LanguageServerId,
         worktree: &Worktree,
     ) -> Result<zed::Command> {
-        let node = worktree
-            .which("node")
-            .ok_or_else(|| "node not found in PATH; RSC language server requires Node.js".to_string())?;
-
-        // CARGO_MANIFEST_DIR is the crate root at build time — it equals the
-        // extension source root both during development and after Zed clones
-        // the extension submodule.
-        let ext_root = env!("CARGO_MANIFEST_DIR");
-
-        let ls_script = format!("{}/src/ls.mjs", ext_root);
-        let commands_path = format!("{}/data/commands.toml", ext_root);
+        // Attempt to find the rsc-ls binary in PATH.
+        // In production, the binary would be downloaded from GitHub Releases
+        // on first launch and cached locally.  For development, it can be
+        // built with `cargo build -p rsc-ls --release` and placed in PATH.
+        let binary = worktree
+            .which("rsc-ls")
+            .ok_or_else(|| {
+                "rsc-ls binary not found in PATH".to_string()
+            })?;
 
         Ok(zed::Command {
-            command: node,
-            args: vec![ls_script, commands_path],
+            command: binary,
+            args: vec![], // commands.toml is embedded at compile time
             env: worktree.shell_env(),
         })
     }

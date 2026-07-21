@@ -5,7 +5,7 @@
 Build a Zed editor extension that adds support for the MikroTik RouterOS scripting language (`.rsc` files), delivered in two phases:
 
 1. **Phase 1 (MVP):** Tree-sitter based syntax highlighting, no Rust code required.
-2. **Phase 2:** A Rust-based language server providing autocompletion, scoped to the root menus `/ip`, `/ipv6`, `/interface`, and `/routing`.
+2. **Phase 2:** A Rust-based language server providing autocompletion and hover for all RouterOS menus. Pure Rust — no Node.js dependency.
 
 This document is the operating guide for any agent (human or AI) contributing to this repository.
 
@@ -28,7 +28,8 @@ All code, comments, documentation, commit messages, and PR descriptions **must b
 | Grammar repo published | **Not done** | `extension.toml` rev is placeholder `0000...` |
 | Phase 1 tested in Zed | **Not done** | Needs "Install Dev Extension" validation |
 | Phase 1 published to zed-industries/extensions | **Not done** | PR not submitted |
-| Phase 2 language server | Done | `src/lib.rs` and `src/ls.mjs` implemented |
+| Phase 2 language server | Done | Native Rust binary at `lsp/`, WASM extension at `extension/` |
+| Node.js dependency removed | Done | `ls.mjs` deleted; LSP now pure Rust (`rsc-ls` binary) |
 
 ---
 
@@ -70,9 +71,17 @@ mikrotik-zed/                          # Monorepo: extension + grammar
 │   ├── extract_commands.py            # Extracts commands.toml from llms-full.txt
 │   └── debug_extract.py              # Debug helper
 │
-├── src/                               # Phase 2 — language server (Rust + Node.js)
-│   ├── lib.rs                         # Zed extension trait impl (385 lines)
-│   └── ls.mjs                         # Node.js LSP server (753 lines)
+│   ├── Cargo.toml                     # WASM cdylib crate
+│   └── src/
+│       └── lib.rs                     # Zed extension trait impl (downloads binary, ~396 lines)
+│
+├── lsp/                               # Phase 2 — LSP binary (native Rust)
+│   ├── Cargo.toml                     # Native binary crate
+│   └── src/
+│       ├── main.rs                    # LSP wire protocol + dispatch (~250 lines)
+│       ├── menus.rs                   # TOML loading + menu indices (~150 lines)
+│       ├── completion.rs              # Completion logic (~220 lines)
+│       └── hover.rs                   # Hover logic (~125 lines)
 │
 └── .agents/skills/                    # OpenCode skills (auto-discovered)
     ├── routeros-reference.md          # How to look up RouterOS commands
@@ -126,20 +135,23 @@ mikrotik-zed/                          # Monorepo: extension + grammar
 
 ---
 
-## Phase 2 — Language Server (Rust/WASM)
+## Phase 2 — Language Server (Pure Rust binary)
 
-### Deliberately Scoped Coverage
+### Architecture
 
-Cover ONLY these 4 root menus at launch:
+```
+Zed  →  WASM extension (extension/lib.rs)  →  launches  →  rsc-ls (native Rust binary)
+```
 
-| Root Menu | Sub-menus |
-|-----------|-----------|
-| `/ip` | address, route, firewall, dhcp-server, dns, service |
-| `/ipv6` | address, dhcp-client, nd, firewall, route |
-| `/interface` | bridge, vlan, pppoe-client, ethernet |
-| `/routing` | ospf, bgp, table, rule |
+- `extension/` — WASM cdylib crate.  Implements `zed_extension_api::Extension`.
+  On `language_server_command`, searches PATH for `rsc-ls` binary and launches it.
+- `lsp/` — native Rust binary.  Embeds `commands.toml` at compile time via `include_str!()`.
+  Communicates over stdio using JSON-RPC 2.0 (LSP protocol).
 
-Do NOT attempt to cover `/system`, `/tool`, `/certificate`, etc. in this phase.
+### Coverage (Full)
+
+All root menus from `llms-full.txt` are extracted: `/interface`, `/ip`, `/ipv6`,
+`/routing`, `/queue`, `/system`, `/tool`, `/user`.  Total: 685 menus.
 
 ### Data Source for the Command Table
 
@@ -157,42 +169,25 @@ The extraction pipeline is already built:
 
 ### Implementation Steps
 
-1. Create `Cargo.toml` at project root:
-   ```toml
-   [package]
-   name = "mikrotik-rsc-ls"
-   version = "0.1.0"
-   edition = "2024"
-
-   [lib]
-   crate-type = ["cdylib"]
-
-   [dependencies]
-   zed_extension_api = "0.5"  # Check latest on crates.io
-   serde = { version = "1", features = ["derive"] }
-   toml = "0.8"
+1. Build the LSP binary:
+   ```bash
+   cargo build -p rsc-ls --release
    ```
-2. In `extension.toml`, add:
-   ```toml
-   [language_servers.rsc-ls]
-   name = "RSC Language Server"
-   languages = ["RSC"]
+2. The binary is now at `target/release/rsc-ls`.  Add it to PATH before launching Zed.
+3. Build the WASM extension:
+   ```bash
+   cargo build -p mikrotik-zed --target wasm32-wasip1 --release
+   cp target/wasm32-wasip1/release/mikrotik_zed.wasm extension.wasm
    ```
-3. In `src/lib.rs`:
-   - Define an `RscExtension` struct and implement the `Extension` trait.
-   - Implement `language_server_command` (launch the LS binary, either bundled or downloaded on first use).
-   - Handle `textDocument/completion` by looking up `data/commands.toml` based on the menu path detected at the cursor's current line.
-   - Handle `textDocument/hover` / documentation by returning the property description from the table when available.
-4. Use `zed_extension_api::current_platform` and `Worktree` methods to locate binaries — **never** `std::env::var` or `cfg` directives (they don't behave as expected under WASM).
-5. Build: `cargo build --target wasm32-wasip1 --release`
-6. Test with "Install Dev Extension"; inspect logs via `zed --foreground` or the `zed: open log` action.
+4. Test with "Install Dev Extension"; inspect logs via `zed --foreground` or the `zed: open log` action.
 
 ### Phase 2 Exit Checklist
 
-- [ ] Autocompletion works inside `/ip`, `/ipv6`, `/interface`, `/routing`.
-- [ ] No false positives for uncovered menus (silent fallback, not errors).
+- [ ] Autocompletion works for all 8 root menus (685 total menus).
+- [ ] Hover shows documentation for menu paths and properties.
 - [ ] `commands.toml` is versioned against a specific RouterOS build.
 - [ ] Documented process for regenerating the table from `llms-full.txt`.
+- [ ] `rsc-ls` binary compiles and runs on all target platforms (macOS aarch64/x86_64, Linux aarch64/x86_64).
 
 ---
 

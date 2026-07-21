@@ -1,4 +1,4 @@
-.PHONY: help generate test test-grammar test-rust test-all parse highlight extract build check clean install-dev validate
+.PHONY: help generate test test-grammar test-rust test-python test-all parse highlight extract build check build-lsp clean install-dev validate
 
 # ── Tree-sitter grammar ────────────────────────────────────────
 
@@ -14,8 +14,8 @@ test: test-grammar ## Alias for test-grammar
 test-grammar: ## Run tree-sitter grammar tests (corpus tests)
 	cd grammars/rsc && npx tree-sitter test
 
-test-rust: ## Run Rust unit tests
-	cargo test --lib
+test-rust: ## Run Rust extension tests
+	cargo test -p mikrotik-zed --lib
 
 test-python: ## Run Python extraction tests
 	python3 -m pytest tests/ -v
@@ -33,14 +33,19 @@ highlight: ## Highlight a file (usage: make highlight FILE=grammars/rsc/test/exa
 extract: ## Regenerate data/commands.toml from llms-full.txt
 	python3 scripts/extract_commands.py
 
-# ── Build (Phase 2) ────────────────────────────────────────────
+# ── Build ──────────────────────────────────────────────────────
 
-build: ## Build language server WASM (Phase 2)
-	cargo build --target wasm32-wasip1 --release
+build: ## Build WASM extension
+	cargo build -p mikrotik-zed --target wasm32-wasip1 --release
 	cp target/wasm32-wasip1/release/mikrotik_zed.wasm extension.wasm
 
-check: ## Quick compile verification (no output)
-	cargo check --target wasm32-wasip1
+build-lsp: ## Build native LSP binary
+	cargo build -p rsc-ls --release
+	@echo "Binary: target/release/rsc-ls"
+
+check: ## Quick compile verification
+	cargo check -p mikrotik-zed --target wasm32-wasip1
+	cargo check -p rsc-ls
 
 # ── Cleanup ────────────────────────────────────────────────────
 
@@ -54,6 +59,10 @@ clean: ## Remove all build artifacts and generated files
 
 install-dev: ## Point Zed to this directory (manual: Zed > Install Dev Extension)
 	@echo "Open Zed → Command Palette → 'Install Dev Extension' → select this directory"
+	@echo ""
+	@echo "Make sure rsc-ls binary is in PATH:"
+	@echo "  cargo build -p rsc-ls --release"
+	@echo "  export PATH=\"\$$PWD/target/release:\$$PATH\""
 
 validate: generate test-all extract ## Full validation: regenerate + all tests + extract
 	@echo "All checks passed."
