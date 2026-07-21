@@ -4,7 +4,7 @@ use zed_extension_api::{self as zed, LanguageServerId, Result, Worktree};
 
 // ── Embedded command table ────────────────────────────────────────
 
-const COMMANDS_TOML: &str = include_str!("../../data/commands.toml");
+const COMMANDS_TOML: &str = include_str!("../data/commands.toml");
 
 // ── Data structures ───────────────────────────────────────────────
 

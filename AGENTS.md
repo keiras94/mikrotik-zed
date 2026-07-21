@@ -71,17 +71,17 @@ mikrotik-zed/                          # Monorepo: extension + grammar
 │   ├── extract_commands.py            # Extracts commands.toml from llms-full.txt
 │   └── debug_extract.py              # Debug helper
 │
-│   ├── Cargo.toml                     # WASM cdylib crate
-│   └── src/
-│       └── lib.rs                     # Zed extension trait impl (downloads binary, ~396 lines)
+├── Cargo.toml                         # Root package (WASM cdylib) + workspace
+├── src/
+│   └── lib.rs                         # Zed extension trait impl (downloads binary)
 │
-├── lsp/                               # Phase 2 — LSP binary (native Rust)
-│   ├── Cargo.toml                     # Native binary crate
+├── lsp/                               # Phase 2 — LSP binary (native Rust, workspace member)
+│   ├── Cargo.toml
 │   └── src/
-│       ├── main.rs                    # LSP wire protocol + dispatch (~250 lines)
-│       ├── menus.rs                   # TOML loading + menu indices (~150 lines)
-│       ├── completion.rs              # Completion logic (~220 lines)
-│       └── hover.rs                   # Hover logic (~125 lines)
+│       ├── main.rs                    # LSP wire protocol + dispatch
+│       ├── menus.rs                   # TOML loading + menu indices
+│       ├── completion.rs              # Completion logic
+│       └── hover.rs                   # Hover logic
 │
 └── .agents/skills/                    # OpenCode skills (auto-discovered)
     ├── routeros-reference.md          # How to look up RouterOS commands
@@ -140,12 +140,12 @@ mikrotik-zed/                          # Monorepo: extension + grammar
 ### Architecture
 
 ```
-Zed  →  WASM extension (extension/lib.rs)  →  launches  →  rsc-ls (native Rust binary)
+Zed  →  WASM extension (src/lib.rs)  →  launches  →  rsc-ls (native Rust binary)
 ```
 
-- `extension/` — WASM cdylib crate.  Implements `zed_extension_api::Extension`.
+- `src/lib.rs` — WASM cdylib crate (root package).  Implements `zed_extension_api::Extension`.
   On `language_server_command`, searches PATH for `rsc-ls` binary and launches it.
-- `lsp/` — native Rust binary.  Embeds `commands.toml` at compile time via `include_str!()`.
+- `lsp/` — native Rust binary (workspace member).  Embeds `commands.toml` at compile time via `include_str!()`.
   Communicates over stdio using JSON-RPC 2.0 (LSP protocol).
 
 ### Coverage (Full)

@@ -15,7 +15,7 @@ test-grammar: ## Run tree-sitter grammar tests (corpus tests)
 	cd grammars/rsc && npx tree-sitter test
 
 test-rust: ## Run Rust extension tests
-	cargo test -p mikrotik-zed --lib
+	cargo test --lib
 
 test-python: ## Run Python extraction tests
 	python3 -m pytest tests/ -v
@@ -36,7 +36,7 @@ extract: ## Regenerate data/commands.toml from llms-full.txt
 # ── Build ──────────────────────────────────────────────────────
 
 build: ## Build WASM extension
-	cargo build -p mikrotik-zed --target wasm32-wasip1 --release
+	cargo build --target wasm32-wasip1 --release
 	cp target/wasm32-wasip1/release/mikrotik_zed.wasm extension.wasm
 
 build-lsp: ## Build native LSP binary
@@ -44,7 +44,7 @@ build-lsp: ## Build native LSP binary
 	@echo "Binary: target/release/rsc-ls"
 
 check: ## Quick compile verification
-	cargo check -p mikrotik-zed --target wasm32-wasip1
+	cargo check --target wasm32-wasip1
 	cargo check -p rsc-ls
 
 # ── Cleanup ────────────────────────────────────────────────────
